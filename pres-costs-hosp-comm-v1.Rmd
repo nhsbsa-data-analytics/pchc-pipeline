@@ -1,0 +1,393 @@
+---
+title: "Prescribing Costs in Hospitals and the Community"
+pagetitle: Prescribing Costs in Hospitals and the Community
+always_allow_html: TRUE
+output:
+  html_document:
+    anchor_sections: no
+    css: www/style.css
+    toc: yes
+    toc_depth: 2
+    toc_float:
+      collapsed: no
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+  word_document:
+    toc: yes
+    toc_depth: '2'
+---
+
+
+<script>
+  <!-- $(document).ready(function() { -->
+  <!--   $('#TOC').prepend('<div><img src=`r knitr::image_uri("www/national-statistics-logo.svg")` alt=\"National Statistics logo\" style=\"position: relative; width: 50%; margin: 10% auto 10% auto; display: block;\"></div>'); -->
+  <!-- }); -->
+  
+  
+   $(document).ready(function() {
+    $('#header').prepend('<img src=`r knitr::image_uri("www/bsa_logo.svg")` alt=\"NHSBSA logo\" style=\"position:relative; float: right; top: 0; right: 0; padding: 10px; width: 25%;\">');
+  });
+  
+</script>
+
+
+<style type="text/css">
+
+* {
+font-family: Arial;
+}
+
+body, td {
+   font-size: 16px;
+   font-family: sans-serif;
+}
+
+h2 {
+color: #005EB8;
+}
+</style>
+<html lang="en">
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+# library chart package
+library(highcharter)
+library(DT)
+library(scales)
+library(lubridate)
+library(tidyverse)
+library(data.table)
+library(kableExtra)
+library(ggthemes)
+library(knitr)
+
+# set highcharts options for thousand separator
+hcoptslang <- getOption("highcharter.lang")
+hcoptslang$thousandsSep <- ","
+hcoptslang$numericSymbols <- c("k", "M", "B", "T")
+options(highcharter.lang = hcoptslang)
+
+# set code chunk options to disable echo by default
+knitr::opts_chunk$set(echo = FALSE)
+
+
+
+
+```
+<main>
+
+# England April 2016 to March 2021 {.toc-ignore}
+
+Published 11 November 2021
+
+## Key findings
+
+The total expenditure on medicines in England by the NHS in 2020/21 was estimated to be £16.7 billion. The total expenditure without central rebates was £17.1 billion, an increase of 4.56% from the £16.4 billion in 2019/20. This is split down to £9.42 billion issued in primary care and dispensed in the community, £7.59 billion issued in hospitals, £87.9 million prescribed in hospitals and dispensed in the community, and £24.3 million prescribed by dentists and dispensed in the community. 
+
+* The cost of medicines prescribed in primary care in England in 2020/21 was £9.42 billion, 55.0% of total expenditure. The cost of medicines dispensed in hospitals in England in 2020/21 was £7.59 billion, 44.3% of total expenditure.
+
+* In 2020/21, the BNF Chapter 8 – Malignant Disease and Immunosuppression had the highest spend across all settings of £2.80 billion, 16.3% of the total spend. Of this spend, £2.61 billion was for medicines issued and dispensed in hospitals.
+
+* The average costs per capita for drugs, dressing, appliances, and medical devices prescribed in England in 2020/21 across all settings was £303.
+
+This is the first release in a new series by the NHSBSA following the migration of this publication from NHS Digital. This release uses data that reflects the actual costs (including applicable VAT) paid by hospitals for medicines including any discounts. Previous versions of this publication used the cost of medicines at list price which did not provide an accurate estimate of the actual costs to hospitals for the provision of medicines to patients.
+
+It is not possible to include the central rebates in the figures broken down by Sustainability and Transformation Partnership (STP) or British National Formulary (BNF) category owing to commercial confidentiality. The central rebate figure includes rebates from arrangements NHS England and NHS Improvement (NHSEI) agreed with pharmaceutical companies following successful negotiations to commission a variety of treatments both in the cancer drugs fund (CDF) and in routine commissioning. This includes treatments for both rare diseases and more common conditions.
+
+---
+
+## 1. Introduction
+
+### 1.1 Scope
+
+These statistics cover NHS prescriptions and medicines issued in England. This includes:
+
+*	prescriptions issued by GP practices and community prescribers in England that have been dispensed in the community in the UK (excl. Northern Ireland)
+
+*	prescriptions issued by Hospitals in England that have been dispensed in the community in the UK (excl. Northern Ireland)
+
+*	prescriptions issued by dental practitioners that have been dispensed in the community in the UK (excl. Northern Ireland)
+
+*	medicines issued in hospitals in England that have been dispensed via the hospital pharmacy, homecare companies and outsourced out-patient pharmacy partnerships
+
+But excludes:
+
+* Prescriptions issued through Justice and Armed Services health services in England commissioned by NHSEI but not dispensed in the community, this covers pharmacy, appliance, Dispensing Doctors (DD) and Personally Administered Items (PADM).
+
+* Any medicines issued in hospital in England but not managed via the hospital pharmacy service.
+
+Previous Prescribing Costs in Hospitals and the Community (PCHC) releases were delivered by [NHS Digital](https://digital.nhs.uk/data-and-information/publications/statistical/prescribing-costs-in-hospitals-and-the-community), this is the first in a new series by the NHSBSA. For the secondary care medicines data these covered the overall cost at list price before any discounts of medicines used in hospitals. This data was provided by IQVIA, who collect data on items issued from pharmacies in most hospitals in England and apply costs to this data using the Drug Tariff and standard price lists. Therefore, all costs given in these reports were medicine costs at list price, also known as Net Ingredient Cost (NIC) in Primary Care – this is the basic price of a drug excluding VAT and is not necessarily the price the NHS paid. Most NHS hospital pharmacies do not supply dressings or devices. The secondary care spend in this report  is not indicative of total NHS spend on these products. Supply is usually made via the NHS Supply chain.
+
+Starting with the 2020/21 release, the publication by the NHSBSA will be produced using data that reflects the actual costs paid by hospitals, including any discounts. This data is collated by Rx-Info and is accessed via their Define system. Data from this source is only available from April 2016 onwards. Primary care data will continue to be extracted from the NHSBSA Enterprise Data Warehouse (EDW).
+
+This publication aims to explore the costs of medicines prescribed within both primary and secondary care in England. These statistics detail:
+
+* cost breakdowns by financial year and month within each setting
+
+* cost breakdowns by BNF Chapter and BNF Section Level by financial year and setting
+
+* financial year cost breakdowns in each setting by STP
+
+* a view of the data down to financial year, BNF Chapter, BNF Section and STP combined
+
+### 1.2 Definitions
+
+Throughout this publication when 'costs' are referred to within hospitals they are the actual costs paid (including applicable VAT) for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England, following any discount. 'Costs' where items have been dispensed in the community are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). The basic price is given either in the Drug Tariff or is determined from prices published by manufacturers, wholesalers, or suppliers. Basic price is set out in Parts VIII and IX of the Drug Tariff. For any drugs not in Part VIII, the price is usually taken from the manufacturer, wholesaler or supplier of the product. 'Costs' also includes retained margin, where applicable. This retained medicine margin contributes to the provision of pharmaceutical services alongside the other agreed fees and allowances.
+
+These statistics use the therapeutic classifications defined in the BNF to group medicines together based on their primary therapeutic indication. The NHSBSA uses and maintains the classification system of the BNF implemented prior to the release of edition 70, including the six pseudo BNF chapters (18 to 23) created by NHS Prescription Services used to classify products that fall outside of chapters 1 to 15.
+
+The NHS England Regions and STPs shown in the statistical summary tables of this release are based on the NHS organisational structure on 31 March 2021. Organisational changes implemented on 1 April 2020 have resulted in 4 NHS England Regions becoming 7, and the abolishment of Local Offices which have been replaced with STPs.
+
+STPs are health geographies that are formed by NHS organisations, local councils, and others to set out proposals to improve health and care for the local population. In these statistics the STP given is that of the dispensing contractor and not the prescribing organisation. These geographies
+are taken from NHSBSA administrative records and relate to the commissioning of services for NHS patients, and not the physical location of a dispensing contractor, or the patient that has received the drug, appliance, or medical device.
+
+Prescribing volumes are not included in this publication. Unlike in the primary care dataset, where item level data is available, in secondary care, data is collated as quantities issued. The concept of a prescription item does not exist for secondary care medicines data.
+
+---
+
+## 2. Results and commentary
+
+The charts in this report are interactive and allow you to isolate the topics that you are interested in by selecting or deselecting a series from the legend of the chart. For example, if you only want to view a single series on a chart, you can click the series names  you are not interested in within the legend of the chart. This will remove the item from the charts. If you wish to subsequently include them, just click their legend entry again.
+
+### 2.1 Costs by setting
+```{r fy_summary}
+
+figure_1
+
+```
+
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table One](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+
+The cost of items prescribed in primary care in England in 2020/21 was £9.42 billion, 55.0% of total expenditure. In 2016/17 the cost of items prescribed in primary care in England was £8.97 billion, 58.5% of total expenditure. 
+
+The cost of items dispensed in hospitals in England in 2020/21 was £7.59 billion, 44.3% of total expenditure. In 2016/17 the cost of items dispensed in hospitals in England was £6.19 billion, 40.4% of total expenditure. 
+
+The central rebate accounted for £462 million in financial year 2020/21. This would reduce the overall expenditure in hospitals for 2020/21 to £7.13 billion. This figure has not been accounted for in the charts and summary tables as it is only available for 2020/21 and is not available at a more granular level than overall amount.
+
+```{r fy_changes}
+
+figure_2
+
+```
+
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Two](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+
+The cost of items within primary care in the community in England in 2020/21 was £9.42 billion. This was a 3.79% increase of £344 million from £9.08 billion in 2019/20 and a 5.03% increase of £451 million from £8.97 billion in 2016/17.
+
+The cost of items dispensed in hospitals in England in 2020/21 was £7.59 billion. This was a 5.93% increase of £425 million from £7.17 billion in 2019/20 and a 22.7% increase of £1.40 billion from £6.19 billion in 2016/17.
+
+In 2020/21 the total costs paid for drugs, dressing, appliances, and medical devices was £17.1 billion. This was an increase of 4.56% from the £16.4 billion paid in 2019/20 and an increase of 11.7% from the £15.3 billion paid in 2016/17.
+
+```{r monthly_summary}
+
+figure_3
+
+```
+
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Three](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+
+In March 2021, the total actual costs paid for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England stood at £750 million. This in an increase of 14.8% on the £654 million paid in March 2020 and an increase of 31.5% on the £571 million paid in March 2017. 
+
+<!-- ### 2.2 Top 10 prescribed medicines in hospitals -->
+
+<!-- **Table 1: Top 10 prescribed medicines in hospitals by actual costs** -->
+
+<!-- ```{r top_atc} -->
+
+<!-- kable(kable_1, align=c('l', 'r')) %>% -->
+<!--   kable_styling(latex_options = "striped") -->
+
+<!-- ``` -->
+
+<!-- Table 1 lists medicines under the World Health Organization (WHO) Anatomical Therapeutic Chemical (ATC) classification system. In the ATC classification system, the active substances are divided into different groups according to the organ or system on which they act and their therapeutic, pharmacological and chemical properties. Drugs are classified in groups at five different levels. -->
+
+<!-- Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Four](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx) -->
+
+<!-- In 2020/21 Aflibercept accounted for £277 million of the total actual costs within hospitals. This was 3.65% of the total costs of £7.59 billion. The top 10 substances by WHO ATC in 2020/21 accounted for 21.8% of these total costs in hospitals at £1.66 billion. -->
+
+### 2.2 Costs by BNF Chapter
+
+```{r bnf_summary}
+
+figure_4
+
+```
+
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Four](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+
+In 2020/21 the largest single spend for a BNF Chapter in any setting was for medicines in chapter 8 - Malignant Disease and Immunosuppression issued in hospitals at £2.61 billion. This represents 34.4% of the total spend within hospitals. This is also the BNF Chapter with the highest costs across all combined settings in 2020/21 at £2.80 billion, 16.3% of the total spend of £17.1 billion.
+
+Within primary care in the community in 2020/21 chapter 4 - Central Nervous System accounted for the largest spend at £1.67 billion. This was 17.7% of the total costs in primary care prescribing dispensed in the community.
+
+Within hospitals in 2020/21 there was a spend of £342 million which is not accounted for under any of the BNF Chapters. These are drugs manufactured as specials, dressing, appliances, and medical devices which are not authored on the Dictionary of Medicines and Devices (dm+d).
+
+```{r bnf_section_summary}
+
+figure_5
+
+```
+
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Five](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+
+In 2020/21 the largest single spend for a BNF Section in any setting was for medicines in section 0801 - Cytotoxic Drugs issued in hospitals at £1.82 billion. This represents 24.0% of the total spend within hospitals.
+
+Within primary care in the community in 2020/21 section 0601 - Drugs Used in Diabetes accounted for the largest spend at £1.19 billion. This was 12.6% of the total costs in primary care prescribing dispensed in the community.
+
+### 2.3 Costs by STP
+
+```{r stp_summary}
+
+figure_6
+
+```
+
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Six](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+
+Cumbria and North East was the STP with the highest costs across all settings of £1.03 billion in 2020/21. 
+
+Data under the 'Undefined' STP relate to costs in both the primary and secondary care datasets which we have been unable to map to a STP.
+
+Data around dental in the community has not been included in figure 5 as dental data is captured under a national code and not available at STP level.
+
+STP costs in secondary care are based on the STP in which the hospital is located. Not all spend is specifically for that STP (e.g. patients may be referred to a hospital outside of their STP).
+
+```{r stp_per_capita}
+
+figure_7
+
+```
+
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Six](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+
+The average cost per capita for medicines issued in all settings in England in 2020/21 was £303. This is an increase from £290 in 2019/20 and an increase from £271 in 2016/17.
+
+North London Partners in Health and Care had the largest average per capita costs in 2020/21 at £470, Hertfordshire and West Essex the lowest at £216. 
+
+---
+
+## 3. Changes to this publication
+
+Following taking over this publication from NHS Digital the  NHSBSA have changed the methodology used in these statistics and expanded their content, including:
+
+* Secondary Care Medicines Data is now provided by Rx-Info. Previous data was provided by IQVIA, who collect data on issues from pharmacies in most hospitals in England and apply costs to this data using the Drug Tariff and standard price lists. Therefore, all costs used previously were medicine costs at list price, also known as Net Ingredient Cost (NIC) in Primary Care – this is the basic price of a drug excluding VAT and is not necessarily the price the NHS paid. Data provided by Rx-Info includes the actual cost paid by NHS hospitals for medicines (including applicable VAT).
+
+* Offering a monthly view of national costs by setting.
+
+* Changing from only presenting data at a national level to presenting costs with financial years down to the lower drug level of BNF Section.
+
+* Data is now presented down to STP level alongside the estimated population of each STP.
+
+```{r comparison chart}
+
+figure_8
+
+```
+
+Figure 8 provides a comparison of the costs in hospitals under the old methodology available from [NHS Digital](https://digital.nhs.uk/data-and-information/publications/statistical/prescribing-costs-in-hospitals-and-the-community/2019-2020) to those under the new methodology of reporting by actual costs (including applicable VAT).
+
+In 2019/20 the gap between actual costs and costs at list price was £4.51 billion. This means in 2019/20 actual costs were 38.6% less than those reported using list price. This gap has widened every year from £2.07 billion (25.1%) in 2016/17.
+
+For full details of the changes made please refer to the [Background Information and Methodology](https://nhsbsa.nhs.uk/sites/default/files/2021-11/PCHC_2021_background_information_methodology_v001.pdf) note released alongside these statistics.
+
+---
+
+## 4. About these statistics
+
+### 4.1 Uses of these statistics
+
+These statistics have a variety of uses including:
+
+* Obtaining a national view of costs for prescriptions dispensed in hospitals and the community in England across the financial year.
+
+* Analysis of cost trends by BNF Chapter, BNF Section and STP.
+
+* Allowing public scrutiny of national prescribing habits.
+
+### 4.2 British National Formulary (BNF) 
+
+The primary care data used in this publication comes from the NHSBSA Enterprise Data Warehouse (EDW). This includes the split of the data down to BNF Section. The data for secondary care is provided by Rx-Info. Rx-Info use an extract from the dm+d to obtain BNF classifications.
+
+### 4.3 Time periods reported in this publication
+
+From the 2020/21 publication onward the starting point has switched to April 2016. Secondary care data provided by Rx-Info is only available back to this point. This differs from other NHSBSA releases but the time series will be expanded each year until a full rolling 10 year period is achieved.
+
+### 4.4 Geographies included in this publication
+
+Sustainability and transformation partnerships (STP) are health geographies that are formed by NHS organisations, local councils, and others to set out proposals to improve health and care for the local population. 
+
+In primary care data the the STP geographies show use NHSBSA administrative records, not geographical boundaries, and more closely reflect the operational organisation of prescribing organisations than other geographical data sources. Within the secondary care data STP is provided by Rx-Info who use NHS Digital Organisation Data Service (ODS) as their source.
+
+This publication presents the STP names as described by the [Office of National Statistics (ONS)](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates) and not as how they are stored in NHSBSA or Rx-Info data. This is different from other NHSBSA publications.
+
+### 4.5 Population statistics included in this publication
+
+Populations by STP throughout this report are the same for each year and come from the latest [ONS population estimates](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates).
+
+### 4.6 Measures of average
+
+Per capita costs measure the average costs across all settings per person in a given area (England, STP) in the specified year. It is calculated by dividing the area's total costs by its total population.
+
+### 4.7 Planned changes to this publication
+
+This is an experimental official statistic release. Experimental statistics are newly developed or innovative statistics. These are published so that users and stakeholders can be involved in the assessment of their suitability and quality at an early stage. More information on how users can give us their feedback can be found in section 7 of this summary. We will regularly be reviewing the methodology used within the statistics.
+
+### 4.8 Monthly SCMD data
+
+NHSBSA Information Services also release a monthly [data set](https://opendata.nhsbsa.net/dataset/secondary-care-medicines-data-indicative-price) for Secondary Care Medicines Data via the Open Data Portal (ODP). ODP is the platform where we host our open data products. The monthly data set is produced from data provided by Rx-Info. This data includes indicative costs rather than actual costs, these are derived from current medicines pricing data held in NHSBSA data systems including the Common Drug Reference (CDR) database and dm+d calculated to a Virtual Medicinal Product (VMP) level.
+
+---
+
+## 5. Statistical disclosure control
+
+Information about our statistical disclosure control protocol [can be found on our website](https://www.nhsbsa.nhs.uk/policies-and-procedures).
+
+The high level figures in this statistical summary have been rounded where appropriate for clarity, in most cases to three significant figures. This is to make this narrative as accessible as possible to all readers. The summary tables released with this publication allow users to investigate this data at lower levels of granularity. Figures in the supplementary tables have not been rounded.
+
+---
+
+## 6. Accessibility
+
+### How to request content in an accessible format {.toc-ignore}
+
+If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille, you can contact us by:
+
+**Email**: nhsbsa.accessibility@nhs.net
+
+**Phone**: 0191 203 5318
+
+[Find out about call charges](https://www.nhsbsa.nhs.uk/contact-us/call-charges-and-phone-numbers)
+
+We’ll consider your request and get back to you in 5 working days.
+
+These contact details are only for accessibility queries. This inbox is not for technical queries or IT problems. If you have a query that is not about accessibility, go to the ‘Contact us’ section of this page.
+
+View our [Accessibility statement for Official Statistics Narratives](https://www.nhsbsa.nhs.uk/accessibility-statement-official-statistics-narratives).
+
+---
+
+## 7. Feedback and contact us
+
+Following the publication of this release the NHSBSA will be launching a public consultation on the data used in these statistics and their content. You can find details of this consultation on our [website](https://www.nhsbsa.nhs.uk/announcements/consultations-and-user-engagement).
+
+Feedback is important to us; we welcome any questions and comments relating to these statistics. 
+
+You can complete a [short survey about this publication](https://online1.snapsurveys.com/Prescribing_Costs_in_Hospitals_Community_Feedback) to help us improve the Official Statistics that we produce. All responses will remain anonymous and individuals will not be identifiable in any report that we produce.
+
+You can view our [privacy policy](https://www.nhsbsa.nhs.uk/our-policies/privacy) on our website to see how your data is used and stored.
+
+You can contact us by:
+
+**Email:** nhsbsa.statistics@nhs.net
+
+**You can also write to us at:**
+
+NHSBSA - Statistics  
+NHS Business Services Authority  
+Stella House  
+Goldcrest Way  
+Newburn Riverside  
+Newcastle upon Tyne  
+NE15 8NY
+
+**Responsible statistician:** Graham Platten
+
+</main>
