@@ -16,8 +16,7 @@ req_pkgs <-
     "dbplyr",
     "tidyr",
     "readxl",
-    "DT",
-    "kableExtra"
+    "DT"
   )
 
 #utils::install.packages(req_pkgs, dependencies = TRUE)
@@ -46,10 +45,55 @@ con <- con_nhsbsa(
 
 # 4. extract data tables from fact table -----------------------------------------
 
+#dwh tables
+table_1_dwh <- table_1_dwh(con)
+table_2_dwh <- table_2_dwh(con)
+table_3_dwh <- table_3_dwh(con)
+table_4_dwh <- table_4_dwh(con)
+table_5_dwh <- table_5_dwh(con)
+table_6_dwh <- table_6_dwh(con)
+table_7_dwh <- table_7_dwh(con)
+
 # disconnect from DWH
 DBI::dbDisconnect(con)
 
+#scmd tables
+scmd_icb_bnf_data <- scmd_icb_bnf_data("Y:\\Official Stats\\PCHC\\data\\ICB_BNF_2022.xlsx")
+
+scmd_national_monthly <- read_excel("Y:\\Official Stats\\PCHC\\data\\NATIONAL_MONTHLY_2022.xlsx")
+
+table_1_scmd <- scmd_icb_bnf_data |>
+  group_by(
+    FINANCIAL_YEAR
+  ) |>
+  summarise(
+    COST = sum(COST, na.rm = T),
+    .groups = "drop"
+  )
+
 # 5. data manipulation ----------------------------------------------------
+
+#table 1
+table_1a <- table_1_dwh |>
+  left_join(
+    table_1_scmd,
+    by = c("Financial Year" = "FINANCIAL_YEAR")
+  ) |>
+  select(
+    1, 5, 3, 4, 2
+  ) |>
+  rename(
+    "Hospital prescribing issued within hospitals (GBP)" = 2
+  ) |>
+  rowwise() |>
+  mutate(
+    `Total (GBP)` = sum(
+      across(
+        contains("GBP")
+      ),
+      na.rm = T
+    )
+  )
 
 # get stp population
 stp_pop <- ons_stp_pop()
