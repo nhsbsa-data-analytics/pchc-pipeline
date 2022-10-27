@@ -1,0 +1,379 @@
+---
+title: "Prescribing Costs in Hospitals and the Community – England"
+always_allow_html: true
+output:
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  html_document:
+    anchor_sections: no
+    css: www/style.css
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+---
+  
+  <script>
+    $(document).ready(function() {
+      $('#header').prepend('<img src=`r knitr::image_uri("www/bsa_logo.svg")` alt=\"NHSBSA logo\" style=\"position:relative; float: right; top: 0; right: 0; padding: 10px; width: 25%;\">');
+  });
+</script>
+  
+  <style type="text/css">
+  
+  body, td {
+    font-size: 16px;
+    font-family: sans-serif;
+  }
+</style>
+  <html lang="en">
+  
+```{r setup, include=FALSE}
+# set code chunk options to disable echo by default
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+
+```
+
+<main>
+  
+# Background Information and Methodology {.toc-ignore}
+  
+## November 2022 {.toc-ignore}
+  
+---
+  
+## 1. Background information
+  
+Prescribing Costs in Hospitals and the Community (PCHC) shows the actual costs paid for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England. This is alongside the cost for drugs, dressings, appliances, and medical devices that have been issued in England. This includes:
+
+* prescriptions issued by GP practices and community prescribers in England that have been dispensed in the community in the UK (excl. Northern Ireland)
+*	prescriptions issued by Hospitals in England that have been dispensed in the community in the UK (excl. Northern Ireland)
+*	prescriptions issued by dental practitioners that have been dispensed in the community in the UK (excl. Northern Ireland)
+*	medicines issued in hospitals in England that have been dispensed via the hospital pharmacy, homecare companies and outsourced out-patient pharmacy partnerships
+
+But excludes:
+
+* Prescriptions issued through Justice and Armed Services health services in England commissioned by NHSEI but not dispensed in the community, this covers pharmacy, appliance, Dispensing Doctors (DD) and Personally Administered Items (PADM).
+* Any medicines issued in hospital in England but not managed via the hospital pharmacy service.
+
+This document will be updated as the statistical methodologies and underlying business processes change over time; it will remain relevant to the most up to date releases of the series.
+
+### 1.1. Data included  {.toc-ignore}
+
+#### 1.1.1 Secondary care medicines data 
+
+Secondary care medicines data contains processed pharmacy stock control data in Dictionary of Medicines and Devices (dm+d) standardised format from all NHS Acute, Teaching, Specialist, Mental Health and Community Trusts in England.
+
+Data is from NHS England sites only and provided under the agreement entered into by Trusts on the funded licence of RX-Info Define by NHS England and Improvement re-contracted in February 2021 to end March 2023.
+
+The primary sources of this data are loaded from hospitals daily in most cases, but secondary sources appear monthly and in arrears of up to 6 weeks. There are multiple different data sources processed by Rx-info with individual provider Trusts having up to 14 data feeds making up their complete data picture.
+
+Where hospitals utilise FP10(HP) forms dispensed in the community pharmacy network these data are not included in this data set. These are included under the primary care data set.
+
+#### 1.2.1 Primary care medicines data 
+
+Prescription data is a long-standing administrative source of data that has been used by commissioners, providers, government, academia, industry, and media to inform local and national policy, in academic research, to monitor medicine uptake, and allow public scrutiny of prescribing habits. It is collected by the NHS Business Services Authority (NHSBSA) for the operational purpose of reimbursing and remunerating dispensing contractors for the costs of supplying drugs and devices, along with essential and advanced services, to NHS patients. The data that forms the basis of these statistics is collected as a by-product of this process.
+
+Data is collected from the submission of prescriptions by dispensing contractors to the NHSBSA. These prescriptions can be issued by GPs and other authorised prescribers such as nurses, dentists, and allied health professionals. Prescriptions that are issued by hospitals can also be dispensed in the community and submitted for reimbursement. Prescriptions that are issued in hospitals and fulfilled by the hospital pharmacy or dispensary are not included in this data.
+
+Prescriptions can be issued as either a paper form or as an electronic message using the Electronic Prescription Service (EPS). EPS prescriptions make up most of prescribing and dispensing activity carried out in England, accounting for 88%  of all prescriptions dispensed in England during 2021. EPS messages are submitted by the dispensing contractor once the prescription has been fulfilled and issued to the patient. The message is initially sent to the [NHS Spine](https://digital.nhs.uk/services/spine), maintained by NHS Digital, and then sent to the NHSBSA for processing. Paper prescriptions are compiled by the dispensing contractor and sent to the NHSBSA at the end of each month by secure courier. These paper prescriptions are then scanned and transformed into digital images, which are passed through intelligent character recognition (ICR) to extract the relevant data from them. Most paper forms go through ICR without any manual intervention. However, there are cases where operator intervention is required to accurately capture information from the prescription form. This manual intervention can be required for many reasons, such as if a form is handwritten or information is obscured by a pharmacy stamp.
+
+After this processing for the reimbursement and remuneration of dispensing contractors, data is extracted from the NHSBSA transactional systems alongside data from the NHSBSA drug and organisational databases and loaded in to the NHSBSA Enterprise Data Warehouse (EDW). During this extract, load and transform (ELT) process a series of business logic is applied to the data to make it easier to use and more useful than if it were to be kept in its raw form. The EDW is the source used by many of our reporting systems and data extracts, including ePACT2, eDEN, eOPS, the English Prescribing Dataset (EPD), and Official Statistics publications.
+
+Data is limited in this publication to only prescription items that have been dispensed by a community pharmacy or appliance contractor in England. Items dispensed by dispensing doctors or submitted for reimbursement via a personal administration account have been excluded.
+
+This data includes all prescriptions issued in England and subsequently dispensed in the community in England, Scotland, Wales, or the Channel Islands. The data excludes any prescriptions issued through Justice and Armed Services health services in England commissioned by NHS England and NHS Improvement (NHSEI) but not dispensed via a community pharmacist.
+
+
+
+### 1.2. British National Formulary (BNF) hierarchy {.toc-ignore}
+
+These statistics use the therapeutic classifications defined in the BNF to group medicines together based on their primary therapeutic indication. The NHSBSA uses and maintains the classification system of the BNF implemented prior to the release of edition 70, including the six pseudo BNF chapters (18 to 23) created by NHS Prescription Services used to classify products that fall outside of chapters 1 to 15. Most of these presentations held in these pseudo chapters are dressings, appliances, and medical devices. Each January the NHSBSA updates the classification of drugs within the BNF hierarchy which may involve some drugs changing BNF codes and moving within the hierarchy.
+
+The BNF has multiple levels, in descending order from the largest grouping to smallest they are chapter, section, paragraph, sub-paragraph, chemical substance, product, and individual presentation. Presentations in chapters 20 to 23 do not have assigned BNF paragraphs, sub-paragraphs, chemical substances, or products.
+
+Within the secondary care data which is provided by Rx-Info the BNF classification is obtained from an extract of the dm+d.
+
+
+### 1.3. Geographies included in this publication {.toc-ignore}
+
+With the primary care data geographies used in this publication are based upon NHSBSA administrative records, not geographical health boundaries as defined by the Office for National Statistics (ONS). These administrative records more closely reflect the operational organisation of dispensing contractors than other geographical data sources such as the National Statistics Postcode Lookup (NSPL).
+
+The NHS England Regions and Integrated Care Board (ICBs) shown in the statistical summary tables of this release are based on the NHS organisational structure at the end of July 2022. Organisational changes implemented in July 2022 have resulted in the replacement of Sustainability and Transformation Partnerships (STPs) with Integrated Care Boards (ICBs). 
+
+Within the secondary care data ICB is provided by Rx-Info who use NHS Digital Organisation Data Service (ODS) as their source.
+
+This publication presents the ICB names as described by the [Office of National Statistics (ONS)](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates) and not as how they are stored in NHSBSA or Rx-Info data. This is different from other NHSBSA publications.
+
+
+## 2. Methodology
+
+### 2.1 Changes to the methodology {.toc-ignore}
+
+Previous Prescribing Costs in Hospitals and the Community (PCHC) reports were delivered by NHS Digital. For the secondary care medicines data, these covered the overall cost at list price, before any discounts, of medicines used in hospitals. This data was provided by IQVIA, who collect data on issues from pharmacies in most hospitals in England and apply costs to this data using the Drug Tariff and standard price lists. Therefore, all costs given in these reports were medicine costs at list price, also known as Net Ingredient Cost (NIC) in Primary Care – this is the basic price of a drug excluding VAT and is not necessarily the price the NHS paid.
+
+Starting with the 2020/21 release, this publication by the NHSBSA will be produced using data which reflects the actual costs paid by hospitals (including applicable VAT), including any discounts. This data is collated by RX-Info and is accessed via their Define system. Primary care data will continue to be extracted from the NHSBSA Enterprise Data Warehouse (EDW) and is consistent with previous releases by NHS Digital.
+
+In previous releases of PCHC data was presented at a national level only. To allow for further exploration into the data this will now be broken down to both costs by BNF Chapter, Section and ICB.
+
+
+### 2.2 Limitations {.toc-ignore}
+
+Owing to commercial confidentiality, it is not possible to present the secondary care data any lower then BNF Section. Actual costs include any discounts, these prices are commercially sensitive so are not publicly available, however, they can be significant for specific types of drugs.
+
+## 3. Changes to this publication
+
+This is an experimental official statistic release. Experimental statistics are newly developed or innovative statistics. These are published so that users and stakeholders can be involved in the assessment of their suitability and quality at an early stage. We will regularly be reviewing the methodology used within the statistics.
+
+
+### 3.1. Changes to geographies {.toc-ignore}
+
+
+In previous releases of this publication the geographies used were Region and Sustainability and Transformation Plans (STPs). Changes to the NHS Organisational Structure mean that Integrated Care Boards (ICBs) will replace STPs from July 2022. Further details of the changes can be found at the NHS Digital Organisation Data Service [website](https://digital.nhs.uk/services/organisation-data-service/integrated-care-boards).
+
+### 3.2. Actual Cost {.toc-ignore}
+
+TBA
+
+
+<!-- ### 3.3. Planned changes to this publication {.toc-ignore} -->
+
+
+
+## 4. Strengths and limitations
+
+### 4.1. Strengths {.toc-ignore}
+
+The main strength of these statistics is the completeness of the primary care dataset and accuracy of information captured during processing activities carried out by the NHSBSA. This dataset covers all prescribing that has been dispensed in the community in England, with consistency in the way data has been captured across the whole dataset. All the data has come from the same administrative source. This administrative data is required to be as accurate as possible as it is used for paying dispensing contractors for services provided to NHS patients.
+
+The NHSBSA’s decision to transition to a single source of drug information in April 2020 also means that the accuracy of these statistics has increased, with known issues and limitations with the previous legacy system being eliminated. This incorporates items previously captured as unspecified drugs now being captured correctly and an increase in the accuracy of capture of quantity information about prescribed drugs. Also due to the editorial policy of DM+D, there is now greater consistency in the naming of presentations.
+
+Starting with the 2020/21 release, the publication by the NHSBSA will be produced using data that reflects the actual costs paid by hospitals, including any discounts.
+
+Rx-Info have ‘normalised’ the secondary care data across the different trusts. This makes it available in an easily comparable format which is available from one single location, their Define system.
+
+
+### 4.2. Limitations {.toc-ignore}
+
+#### 4.2.1 Exclusions
+
+These statistics exclude prescriptions that were issued but not presented for dispensing and prescriptions that were not submitted to the NHSBSA for processing and reimbursement. Prescriptions issued and dispensed in prisons, by dispensing doctors, items personally administered by medical professionals and private prescriptions are also excluded, and so do not give a full picture of all prescribing in England.
+
+#### 4.2.2 Undefined data
+
+Within the secondary care dataset there are drugs, dressing, appliances, and medical devices issued within hospitals in England which are not included in the BNF. These are drugs manufactured as specials, dressing, appliances, and medical devices which are not authored on the Dictionary of Medicines and Devices (dm+d).
+
+#### 4.2.3 Central Rebates 
+
+Owing to commercial sensitivity, the central rebate figures are only available at a national level.  It is not possible to calculate this down to the ICB and BNF Section levels like the primary and secondary care datasets.
+
+
+### 4.3. Uses of PCHC  {.toc-ignore}
+
+See our [Official Statistics guidance table](https://www.nhsbsa.nhs.uk/statistical-collections) for a short summary of the key criteria covered by PCHC. To expand on the points outlined in that document, see the below summaries for suitable/unsuitable uses for PCHC.
+
+#### 4.3.1 PCHC can be used for:
+
+*	Obtaining a national view of costs for prescriptions dispensed in hospitals and the community in England across the calendar year.
+*	Analysis of cost trends in by BNF Chapter, BNF Section and ICB.
+*	Allowing public scrutiny of national prescribing habits.
+
+Additional data tables have also been supplied as part of the release which enable analysis of some key areas of interest.
+
+#### 4.3.1 PCHC cannot be used for:
+
+*	Providing breakdowns for more granular geographies than ICB. 
+*	Providing breakdowns further down the BNF hierarchy than BNF Section.
+*	Providing a final figure representative of the total cost to the NHS. For prescriptions issued in primary care, net ingredient cost (NIC), does not consider all elements that contribute towards the final cost to the NHS, for example remuneration to contractors, discounts, advance payments, and patient charges.
+*	Providing analysis of the method of dispensing. 
+
+For prescriptions issued in primary care users should note that it is only assumed that the items claimed for on the prescription forms are the same as those dispensed to patients. Whilst it would break the dispensing contractor terms of service to dispense another item (except in instances where a Serious Shortage Protocol is in place), the NHSBSA has no way of confirming this.
+
+For medicines issued in hospitals data is reliant upon accurate submission by hospitals to Rx-Info. This data is taken from the point in time when the data becomes available but, hospital data can continue to change past this point. Any changes would be reflected in the reporting for the following financial year.
+
+## 5. Revisions
+
+Any revisions that we make to these statistics will be made in line with our [Revisions and Corrections policy](https://www.nhsbsa.nhs.uk/policies-and-procedures). Any significant errors that are identified within these statistics after their publication that would result in the contradiction of conclusions previously drawn from the data will be notified of prominently on our website and any other platforms that host these statistics, corrected as soon as possible, and communicated clearly to users and stakeholders.
+
+In line with principle Q2.5 – Sound methods, within the [Code of Practice of Statistics](https://code.statisticsauthority.gov.uk/the-code/) and our Revisions and Corrections policy we are releasing data from 2016 to 2020 with this publication to maintain as consistent a time series as possible for users after the changes in methodology have been applied to these statistics.
+
+## 6. Related statistics, comparability and useful resources
+
+### 6.1 Prescription Cost Analysis (PCA) – England {.toc-ignore}
+
+For the primary care data NHSBSA produces an [annual publication](https://www.nhsbsa.nhs.uk/statistical-collections/prescription-cost-analysis-england) with National Statistics designation. Similar releases are produced by the devolved administrations for Scotland, Wales, and Northern Ireland.
+
+Primary care costs with the PCA differ from the differ from this publication as they are based on medicines dispensed in England whereas PCHC uses medicines prescribed in England.
+
+
+### 6.2 Rx-info {.toc-ignore}
+
+Rx-Info are the suppliers of the secondary care medicines data used within this publication. Users can find out more about the services offered by Rx-Info by visiting their [website](https://www.rx-info.co.uk/). 
+
+### 6.3 NHSBSA Open Data Portal {.toc-ignore}
+
+The [NHSBSA Open Data Portal](https://opendata.nhsbsa.net/) is the platform where we host our open data products.
+
+### 6.4 Secondary care medicines data in devolved administrations {.toc-ignore}
+
+There are currently no publications around secondary care medicines data prescribed within the devolved administrations.
+
+### 6.5 Dictionary of Medicines and Devices (DM+D) {.toc-ignore}
+
+The DM+D can be accessed via a web-based browser on the [NHSBSA website](https://services.nhsbsa.nhs.uk/dmd-browser/). On the website are also the DM+D editorial policy and the data model of the database that feeds the browser. These are key resources in understanding the drug data that the NHSBSA holds.
+
+### 6.6 Code of Practice for Statistics {.toc-ignore}
+
+These statistics have been produced in compliance of the Code of Practice for Statistics. You can find more on the code of practice and its pillars, principles and practices from the [UK Statistics Authority website](https://code.statisticsauthority.gov.uk/).
+
+## 7. Quality of the statistics
+
+We aim to provide users of this publication with an evidence-based assessment of its quality and the quality of the data from which it is produced. We do so to demonstrate our commitment to comply with the UK Statistics Authority’s (UKSA) Code of Practice for Statistics, particularly the pillar of Quality and its principles.
+
+**Q1 Suitable data sources** – Statistics should be based on the most appropriate data to meet intended uses. The impact of any data limitations for use should be assessed, minimised, and explained.
+
+**Q2 Sound methods** – Producers of statistics and data should use the best available methods and recognised standards and be open about their decisions.
+
+**Q3 Assured quality** – Producers of statistics and data should explain clearly how they assure themselves that statistics and data are accurate, reliable, coherent, and timely.
+
+This is an assessment of the quality of these statistics against the European standard for quality reporting and its dimensions specific to statistical outputs, particularly:
+  
+*	Relevance
+*	Accuracy and reliability
+*	Timeliness and punctuality
+*	Accessibility
+*	Coherence and comparability
+
+These principles guide us and are complimented by the UKSA’s regulatory standard for the Quality Assurance of Administrative Data (QAAD). You can view our QAAD assessment of prescription data on [our website](https://www.nhsbsa.nhs.uk/statistical-collections).
+
+### 7.1. Relevance {.toc-ignore}
+
+***This dimension covers the degree to which the product meets user need in both coverage and content***
+  
+The PCHC publication, released annually, summarises the total costs of all NHS prescriptions which have been issued in England for the preceding financial years. The statistics also give cost breakdowns to both BNF Section and ICB levels. The statistics cover from the 2016/17 financial year onwards, allowing the analysis of cost trends over time. We believe that they can be used to inform policy decisions at a national and local level, by the public to scrutinise prescribing habits, and by academia and applied health researchers for matters relating to public health. 
+
+We will be gathering feedback from users of these statistics on an on-going basis to help shape them and ensure that they remain relevant and of use.
+
+### 7.2 Accuracy and Reliability {.toc-ignore}
+
+***This dimension covers the statistics proximity between an estimate and the unknown true value***
+  
+  #### 7.2.1. Accuracy  {.toc-ignore}
+  
+  These statistics are derived from data collected during processing activities carried out by the NHSBSA to reimburse dispensing contractors for providing services to NHS patients. Prescriptions are scanned and subject to rigorous automatic and manual validation processes to ensure accurate payments are made to dispensing contractors. Where electronic prescriptions are used the scope for manual intervention and input into data is reduced dramatically.
+
+The figures used are collected as an essential part of the process of reimbursing dispensing contractors (mainly pharmacists and dispensing doctors) for medicines supplied. All prescriptions which are dispensed in England need to be submitted to the NHSBSA if the dispenser is to be reimbursed, and so coverage should be complete. Due to the manual processes involved in the processing of prescriptions there may be random inaccuracies in capturing prescription information which are then reflected in the data. NHS Prescription Services, a division of NHSBSA, internally quality assures the data that is captured from prescriptions to a 99.70% level via a statistically valid random sample of 50,000 items that are reprocessed monthly. The latest reported [Prescription Processing Information Accuracy](https://www.nhsbsa.nhs.uk/pharmacies-gp-practices-and-appliance-contractors/payments-and-pricing/how-we-process-prescriptions) from NHS Prescriptions services, which covers the 12 month period July 2021 to June 2022, is 99.92%.
+
+#### 7.2.2. Reliability {.toc-ignore}
+
+Within the primary care data, as there is a manual data entry element to this system then inevitably some small errors may occur in the data. The NHSBSA and NHS Prescription Services take measures to minimise these errors. This includes the presence of a permanent dedicated accuracy team within NHS Prescription services which provides feedback to operators around any errors identified to help prevent regular occurrence.
+
+
+### 7.3. Timeliness and punctuality {.toc-ignore}
+
+***Timeliness refers to the time gap between publication and the reference period. Punctuality refers to the gap between planned and actual publication dates***
+  
+The PCHC publication is published annually. The publication date is determined by the availability of the datasets. 
+
+Primary care data is dependent on the completion of processing by NHS Prescription Services, allowing adequate time for the compilation and quality assurance of the publication. The data is usually available six weeks after the end of the month that the data relates to. 
+
+Secondary care data is collated from hospital trusts by Rx-Info. Rx-Info run an annual exercise where data is finalised for a financial year and any further ‘backtracking’ cannot occur, this occurs in July every year. We will look to bring the release forward in the year where available resource allows and in line with user feedback.
+
+Future releases will be announced in advance in line with our [statistical release calendar](https://www.nhsbsa.nhs.uk/announcements/statistical-publication-calendar).
+
+
+### 7.4. Accessibility and clarity {.toc-ignore}
+
+***Accessibility is the ease with which users can access the data, also reflecting the format in which the data are available and the availability of supporting information. Clarity refers to the quality and sufficiency of the metadata, illustrations, and accompanying advice***
+  
+The statistical summary narrative for this publication is presented as an HTML webpage, with supporting documentation also released in HTML format. Summary data and additional analysis is presented in tables in Excel files.
+
+The R code used to produce the publication will also be made available from the [NHSBSA GitHub](https://github.com/nhsbsa-data-analytics) in due course.
+
+***Clarity***
+  
+A glossary of terms is included in this document.
+
+
+### 7.5. Coherence and comparability {.toc-ignore}
+
+***Coherence is the degree to which data have been derived from different sources or methods but refer to the same topic or similar. Comparability is the degree to which data can be compared over time and domain***
+  
+
+#### 7.5.1. Comparisons over time {.toc-ignore}
+
+
+Changes to the figures displayed in these statistics over time should be interpreted in the context of the wider prescribing system, including the availability of medicines, release of new medicines and their costs, and changing national and regional prescribing guidelines. 
+
+These statistics use the BNF therapeutic classifications defined in the British National Formulary (BNF) using the classification system prior to BNF edition 70. Each January the NHSBSA updates the classification of drugs within the BNF hierarchy which may involve some drugs changing classification between years of PCA data. This data is therefore correct at the time of publication but may differ in the following year. The NHSBSA publishes the latest BNF information each year via its information systems. 
+
+The data for secondary care is provided by Rx-Info. Rx-Info use an extract from the dm+d to obtain BNF classifications. This data is only available back to April 2016. This differs from other NHSBSA releases, but the time series will be expanded each year until a full rolling 10-year period is achieved.  
+
+## 8. Glossary of terms used in these statistics
+
+#### Actual costs within secondary care {.toc-ignore}
+
+Actual amount paid by the NHS for the medicines, taking into account any local, regional or national contract prices, Patient Access Scheme (PAS) or commercial access agreements.
+
+#### British National Formulary (BNF) {.toc-ignore}
+
+PCHC data uses the therapeutic classifications defined in the British National Formulary (BNF) using the classification system prior to edition 70. NHS Prescription Services have created pseudo BNF chapters for items not included in BNF chapters 1 to 15. The majority of such items are dressings and appliances, which have been classified into six pseudo BNF chapters (18 to 23). Information on why a drug is prescribed is not available in this dataset. Since drugs can be prescribed to treat more than one condition, it may not be possible to separate the different conditions for which a drug may have been prescribed. The BNF has multiple levels, in descending order from largest grouping to smallest: chapter, section, paragraph, sub-paragraph, chemical substance, product, presentation. Presentations in chapters 20-23 do not have an assigned BNF paragraph, sub-paragraph, chemical substance or product.
+
+#### Costs at list price – net ingredient cost {.toc-ignore}
+
+In British pound sterling (GBP). The amount that would be paid using the basic price of the prescribed drug or appliance and the quantity prescribed, sometimes called 'Net Ingredient Cost' (NIC). The basic price is given either in the Drug Tariff or is determined from prices published by manufacturers, wholesalers, or suppliers. Basic price is set out in Parts VIII and IX of the Drug Tariff. For any drugs or appliances not in Part VIII, the price is usually taken from the manufacturer, wholesaler, or supplier of the product.
+
+#### Dispensed in the community {.toc-ignore}
+
+When a prescription item is dispensed in the community this means that it has been dispensed by a community pharmacy, appliance contractor, dispensing doctor, or is a personally administered item.
+
+
+#### Dispensed in hospitals {.toc-ignore}
+
+When a prescription item is dispensed in a hospital this means that it has been dispensed via the hospital pharmacy, homecare companies and outsourced out-patient pharmacy partnerships.
+
+
+#### Integrated Care Board (ICB) {.toc-ignore}
+
+Integrated care boards (ICBs) are a statutory NHS organisation responsible for developing a plan in collaboration with NHS trusts/foundation trusts and other system partners for meeting the health needs of the population, managing the NHS budget and arranging for the provision of health services in the defined area. They took over the functions of Sustainability and Transformation Partnerships (STPs) in July 2022.
+
+
+#### Population estimates {.toc-ignore}
+
+The Office for National Statistics (ONS) produces annual estimates of the resident population of England and on 30 June every year. The most authoritative population estimates come from the census, which takes place every 10 years in the UK. Population estimates from a census are updated each year to produce mid-year population estimates (MYEs), which are broken down by local authority, sex and age.
+
+#### Prescription/prescription form {.toc-ignore}
+
+A prescription (also referenced as a prescription form) has two incarnations: a paper form, and an electronic prescription available via EPS. A paper prescription can hold up to a maximum of ten items. A single electronic prescription can hold a maximum of four items.
+
+
+
+## 9. Feedback and contact us
+
+Feedback is important to us; we welcome any questions and comments relating to these statistics. 
+
+Please quote ‘PCHC – Background Information and Methodology Note’ in the subject title of any correspondence.
+
+You can complete a [short survey about this publication](https://online1.snapsurveys.com/Official_Statistics_Feedback) to help us improve the Official Statistics that we produce. All responses will remain anonymous and individuals will not be identifiable in any report that we produce.
+
+You can view our [privacy policy](https://www.nhsbsa.nhs.uk/our-policies/privacy) on our website to see how your data is used and stored.
+
+You can contact us by:
+  
+**Email:** nhsbsa.statistics@nhs.net
+
+**You can also write to us at:**
+  
+NHSBSA - Statistics  
+NHS Business Services Authority  
+Stella House  
+Goldcrest Way  
+Newburn Riverside  
+Newcastle upon Tyne  
+NE15 8NY
+
+</main>
+  
