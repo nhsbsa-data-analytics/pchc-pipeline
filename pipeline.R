@@ -71,6 +71,30 @@ table_1_scmd <- scmd_icb_bnf_data |>
     .groups = "drop"
   )
 
+table_3_scmd <- scmd_national_monthly %>%
+  rename(
+    YEAR_MONTH = 1,
+    COST = 2
+  ) %>%
+  mutate(
+    YEAR_MONTH = paste0(
+      substr(
+        as.character(
+          YEAR_MONTH
+          ),
+        1,
+        4
+        ),
+      substr(
+        as.character(
+          YEAR_MONTH
+        ),
+        6,
+        7
+      )
+    )
+  )
+
 # 5. data manipulation ----------------------------------------------------
 
 #table 1
@@ -94,6 +118,31 @@ table_1a <- table_1_dwh |>
       na.rm = T
     )
   )
+
+table_3 <- table_3_dwh |>
+  mutate(
+    `Year Month` = as.character(`Year Month`)
+  ) |>
+  left_join(
+    table_3_scmd,
+    by = c("Year Month" = "YEAR_MONTH")
+  ) |>
+  select(
+    1, 5, 3, 4, 2
+  ) |>
+  rename(
+    "Hospital prescribing issued within hospitals (GBP)" = 2
+  ) |>
+  rowwise() |>
+  mutate(
+    `Total (GBP)` = sum(
+      across(
+        contains("GBP")
+      ),
+      na.rm = T
+    )
+  )
+
 
 # get stp population
 stp_pop <- ons_stp_pop()
