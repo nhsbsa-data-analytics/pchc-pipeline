@@ -71,6 +71,24 @@ table_1_scmd <- scmd_icb_bnf_data |>
     .groups = "drop"
   )
 
+table_2_scmd <- scmd_icb_bnf_data |>
+  group_by(
+    FINANCIAL_YEAR
+  ) |>
+  summarise(
+    COST = sum(COST, na.rm = T),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(
+    prev_year_COST = lag(COST,1 )
+  ) |>
+  dplyr::mutate(
+    `Hospital prescribing issued within hospitals (%)` =
+      (COST - prev_year_COST) / prev_year_COST * 100
+  ) |>
+  stats::na.omit() |>
+  dplyr::select(1,4)
+
 table_3_scmd <- scmd_national_monthly %>%
   rename(
     YEAR_MONTH = 1,
@@ -93,6 +111,16 @@ table_3_scmd <- scmd_national_monthly %>%
         7
       )
     )
+  )
+
+table_4_scmd <- scmd_icb_bnf_data %>%
+  group_by(
+    FINANCIAL_YEAR,
+    BNF_CHAPTER
+  ) |>
+  summarise(
+    COST = sum(COST, na.rm = T),
+    .groups = "drop"
   )
 
 # 5. data manipulation ----------------------------------------------------
@@ -119,6 +147,18 @@ table_1a <- table_1_dwh |>
     )
   )
 
+table_2 <- table_2_dwh |>
+  left_join(
+    table_2_scmd,
+    by = c("FINANCIAL_YEAR" = "FINANCIAL_YEAR")
+  ) |>
+  select(
+    1, 5, 3, 4, 2
+  ) |>
+  rename(
+    "Financial Year" = 1
+  ) 
+  
 table_3 <- table_3_dwh |>
   mutate(
     `Year Month` = as.character(`Year Month`)
@@ -142,6 +182,48 @@ table_3 <- table_3_dwh |>
       na.rm = T
     )
   )
+
+table_4 <- table_4_scmd |>
+  left_join(
+    table_4_dwh,
+    by = c(
+      "FINANCIAL_YEAR" = "Financial Year",
+      "BNF_CHAPTER" = "BNF Chapter"
+      )
+  ) |>
+  select(
+    1,2,4,3,6,7,5
+  ) |>
+  mutate(
+    BNF_CHAPTER = case_when(
+      BNF_CHAPTER == "-None-" ~ "Undefined",
+      TRUE ~ BNF_CHAPTER
+    ),
+    `BNF Chapter Description` = case_when(
+      is.na(`BNF Chapter Description`) ~ "Undefined",
+      TRUE ~ `BNF Chapter Description`
+    )
+  ) |>
+  arrange(
+    FINANCIAL_YEAR,
+    BNF_CHAPTER == "Undefined"
+  ) |>
+  rename(
+    "Financial Year" = 1,
+    "BNF Chapter" = 2,
+    "Hospital prescribing issued within hospitals (GBP)" = 4
+  ) |>
+  rowwise() |>
+  mutate(
+    `Total (GBP)` = sum(
+      across(
+        contains("GBP")
+      ),
+      na.rm = T
+    )
+  ) 
+
+table_4[is.na(table_4)] = 0
 
 
 # get stp population
