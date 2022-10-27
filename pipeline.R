@@ -134,6 +134,25 @@ table_5_scmd <- scmd_icb_bnf_data |>
     .groups = "drop"
   )
 
+table_6_scmd <- scmd_icb_bnf_data |>
+  group_by(
+    FINANCIAL_YEAR,
+    ICB
+  ) |>
+  summarise(
+    COST = sum(COST, na.rm = T),
+    .groups = "drop"
+  ) |>
+  mutate(
+    ICB = trimws(ICB),
+    ICB = case_when(
+      ICB == "Unknown ICB" ~ "UNKNOWN ICB",
+      TRUE ~ ICB
+    )
+  )
+
+
+
 # 5. data manipulation ----------------------------------------------------
 
 #table 1
@@ -361,11 +380,85 @@ table_5 <- table_5_non_na |>
 
 table_5[is.na(table_5)] = 0
 
+#table 6
+table_6 <- table_6_dwh |>
+  left_join(
+    table_6_scmd,
+    by = c(
+      "Financial Year" = "FINANCIAL_YEAR",
+      "ICB" = "ICB"
+    )
+  ) |>
+  select(
+    1,2,3,7,5,6,4
+  ) |>
+  rename(
+    "Hospital prescribing issued within hospitals (GBP)" = 4
+  ) |>
+  rowwise() |>
+  mutate(
+    `Total (GBP)` = sum(
+      across(
+        contains("GBP")
+      ),
+      na.rm = T
+    )
+  ) 
 
-
+table_6[is.na(table_6)] = 0
 
 # get stp population
-stp_pop <- ons_stp_pop()
+ons_stp_pop <- function() {
+  
+  #create temp file to download xlsx file into
+  
+  temp <- tempfile()
+  
+  stp_url <- utils::download.file(url = "https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2fclinicalcommissioninggroupmidyearpopulationestimates%2fmid2020sape23dt6a/sape23dt6amid2020ccg2021estimatesunformatted.xlsx",
+                                  temp,
+                                  mode = "wb")
+  
+  #read xlsx population file
+  stp_pop <- readxl::read_xlsx(temp,
+                               sheet = 4,
+                               range = "A9:G114",
+                               col_names = c("CCG_CD","CCG_NM","STP21_CD","STP21_NM",
+                                             "REGION_CD","REGION_NM","POP"), 
+                               skip = 8)
+  
+  ods_lookup = "https://opendata.arcgis.com/api/v3/datasets/a458c272484743aa9caa25619ccbe1ac_0/downloads/data?format=csv&spatialRefId=4326"
+  
+  ods <- data.table::fread(ods_lookup)
+  
+  #join population data to ods lookup
+  
+  df <- stp_pop |> 
+    dplyr::left_join(select(ods,CCG21CD,STP21CDH,STP21NM), by = c("CCG_CD" = "CCG21CD")) |> 
+    dplyr::group_by(STP21_NM,STP21CDH,STP21_CD) |> 
+    dplyr::summarise(POP = sum(POP)) |> 
+    ungroup()
+  
+  return(df)
+  
+}
+stp_pop <- ons_stp_pop() |>
+  select(
+    STP21CDH, POP
+  )
+
+table_6 <- table_6 |>
+  left_join(
+    stp_pop,
+    by = c(
+      "ICB Code" = "STP21CDH"
+    )
+  ) |>
+  rename(
+    "Population" = 9
+  ) |>
+  mutate(
+    `Average Cost Per Capita (GBP)` = `Total (GBP)` / Population
+  )
 
 
 # 6. write data to .xlsx --------------------------------------------------
