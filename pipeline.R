@@ -151,6 +151,24 @@ table_6_scmd <- scmd_icb_bnf_data |>
     )
   )
 
+table_7_scmd <- scmd_icb_bnf_data |>
+  group_by(
+    FINANCIAL_YEAR,
+    ICB,
+    BNF_CHAPTER,
+    BNF_SECTION
+  ) |>
+  summarise(
+    COST = sum(COST, na.rm = T),
+    .groups = "drop"
+  ) |>
+  mutate(
+    ICB = trimws(ICB),
+    ICB = case_when(
+      ICB == "Unknown ICB" ~ "UNKNOWN ICB",
+      TRUE ~ ICB
+    )
+  )
 
 
 # 5. data manipulation ----------------------------------------------------
@@ -458,6 +476,185 @@ table_6 <- table_6 |>
   ) |>
   mutate(
     `Average Cost Per Capita (GBP)` = `Total (GBP)` / Population
+  )
+
+table_7_raw <- table_7_scmd |>
+  full_join(
+    table_7_dwh,
+    by = c(
+      "FINANCIAL_YEAR" = "Financial Year",
+      "BNF_SECTION" = "BNF Section",
+      "ICB" = "ICB"
+    )
+  ) |>
+  select(
+   -`BNF Chapter Description`
+  ) |>
+  left_join(
+    bnf_chapter_lookup,
+    by = c(
+      "BNF_CHAPTER" = "BNF Chapter"
+    )
+  ) |>
+  mutate(
+    BNF_CHAPTER = case_when(
+      is.na(BNF_CHAPTER) ~ `BNF Chapter`,
+      TRUE ~ BNF_CHAPTER
+    )
+  ) |>
+  select(
+    1, 3, 12, 4, 7, 8, 2, 5, 10, 11, 9
+  ) |>
+  mutate(
+    BNF_CHAPTER = case_when(
+      BNF_CHAPTER == "-None-" ~ "Undefined",
+      TRUE ~ BNF_CHAPTER
+    ),
+    `BNF Chapter Description` = case_when(
+      is.na(`BNF Chapter Description`) ~ "Undefined",
+      TRUE ~ `BNF Chapter Description` 
+    ),
+    BNF_SECTION = case_when(
+      BNF_SECTION == "-None-character(0)" ~ "Undefined",
+      TRUE ~ BNF_SECTION
+    ),
+    BNF_CHAPTER = case_when(
+      BNF_CHAPTER != "Undefined" ~ substr(BNF_SECTION, 1, 2),
+      is.na(BNF_CHAPTER) ~ substr(BNF_SECTION, 1, 2),
+      TRUE ~ BNF_CHAPTER
+    )
+  )
+
+table_7_non_na <- table_7_raw |>
+  filter(
+    !is.na(`BNF Section Description`)
+  ) |>
+  left_join(
+    bnf_chapter_lookup, 
+    by = c(
+      "BNF_CHAPTER" = "BNF Chapter"
+    )
+  ) |>
+  select(
+    1,2,12,4,5,6,7,8,9,10,11
+  ) |>
+  rename(
+    "Financial Year" = 1,
+    "BNF Chapter" = 2,
+    "BNF Chapter Description" = 3,
+    "BNF Section" = 4,
+    "BNF Section Description" = 5,
+    "ICB Code" = 6,
+    "ICB" = 7,
+    "Hospital prescribing issued within hospitals (GBP)" = 8,
+    "Dental prescribing dispensed in the community (GBP)" = 9,
+    "Hospital prescribing dispensed in the community (GBP)" = 10,
+    "Primary care prescribing dispensed in the community (GBP)" = 11
+  )
+
+icb_code_lookup <- table_6_dwh |>
+  select(
+    `ICB Code`,
+    ICB
+  ) |>
+  distinct()
+ 
+table_7_na <- table_7_raw |>
+  filter(
+    is.na(`BNF Section Description`)
+  ) |>
+  left_join(
+    scmd_section_lookup,
+    by = c(
+      "BNF_SECTION" = "BNF_SECTION"
+    )
+  ) |>
+  left_join(
+    icb_code_lookup,
+    by = c(
+      "ICB" = "ICB"
+    )
+  ) %>%
+  select(
+    1,2,3,4,12,13,7,8,9,10,11
+  ) %>%
+  mutate(
+    BNF = case_when(
+      is.na(BNF) ~ "Undefined",
+      TRUE ~ BNF
+    )
+  )|>
+  rename(
+    "Financial Year" = 1,
+    "BNF Chapter" = 2,
+    "BNF Chapter Description" = 3,
+    "BNF Section" = 4,
+    "BNF Section Description" = 5,
+    "ICB Code" = 6,
+    "ICB" = 7,
+    "Hospital prescribing issued within hospitals (GBP)" = 8,
+    "Dental prescribing dispensed in the community (GBP)" = 9,
+    "Hospital prescribing dispensed in the community (GBP)" = 10,
+    "Primary care prescribing dispensed in the community (GBP)" = 11
+  )
+
+table_7 <- table_7_non_na |>
+  bind_rows(
+    table_7_na
+  ) |>
+  arrange(
+    `Financial Year`,
+    `BNF Chapter`,
+    `BNF Section`,
+    `ICB Code`
+  ) %>%
+  arrange(
+    `Financial Year`,
+    `BNF Chapter`,
+    `BNF Section`,
+    `ICB Code` == "-"
+  )|>
+  rowwise() |>
+  mutate(
+    `Total (GBP)` = sum(
+      across(
+        contains("GBP")
+      ),
+      na.rm = T
+    )
+  ) %>%
+  mutate(
+    #fix bnf section desc differences from scmd to dwh
+    `BNF Section Description` = case_when(
+      `BNF Section` == "1803" ~ "X-Ray contrast media",
+      `BNF Section` == "1901" ~ "Alcohol, wines and spirits",
+      `BNF Section` == "1904" ~ "Single substances",
+      `BNF Section` == "1905" ~ "Other preparations",
+      `BNF Section` == "1908" ~ "Colouring, flavouring and sweetening agents",
+      `BNF Section` == "1909" ~ "Disinfectants, preservatives and sterilising agents",
+      `BNF Section` == "1915" ~ "Other gases",
+      `BNF Section` == "2001" ~ "Absorbent Cottons",
+      `BNF Section` == "2134" ~ "Vaginal PH Correction Products",
+      `BNF Section` == "2144" ~ "Debrisoft pad 13cm x 20cm",
+      TRUE ~ `BNF Section Description`
+    )
+  )
+
+table_7[is.na(table_7)] = 0
+
+section <- table_7 %>%
+  group_by(
+    `Financial Year`,
+    `BNF Chapter`,
+    `BNF Chapter Description`,
+    `BNF Section`,
+    `BNF Section Description`
+  ) %>%
+  summarise(
+    `Hospital prescribing issued within hospitals (GBP)` = sum(`Hospital prescribing issued within hospitals (GBP)`),
+    `Dental prescribing dispensed in the community (GBP)` = sum(`Dental prescribing dispensed in the community (GBP)`),
+    `Hospital prescribing dispensed in the community (GBP)` = sum(`Hospital prescribing dispensed in the community (GBP)`),
+    `Primary care prescribing dispensed in the community (GBP)` = sum(`Primary care prescribing dispensed in the community (GBP)`)
   )
 
 
