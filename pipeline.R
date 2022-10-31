@@ -46,13 +46,15 @@ con <- con_nhsbsa(
 # 4. extract data tables from fact table -----------------------------------------
 
 #dwh tables
-table_1_dwh <- table_1_dwh(con)
-table_2_dwh <- table_2_dwh(con)
-table_3_dwh <- table_3_dwh(con)
-table_4_dwh <- table_4_dwh(con)
-table_5_dwh <- table_5_dwh(con)
-table_6_dwh <- table_6_dwh(con)
-table_7_dwh <- table_7_dwh(con)
+table_1_dwh <- table_1_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_2_dwh <- table_2_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_3_dwh <- table_3_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_4_dwh <- table_4_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_5_dwh <- table_5_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_6_dwh <- table_6_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_7_dwh <- table_7_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_8_dwh <- table_8_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+
 
 # disconnect from DWH
 DBI::dbDisconnect(con)
@@ -78,6 +80,15 @@ table_2_scmd <- scmd_icb_bnf_data |>
   summarise(
     COST = sum(COST, na.rm = T),
     .groups = "drop"
+  )
+
+table_3_scmd <- scmd_icb_bnf_data |>
+  group_by(
+    FINANCIAL_YEAR
+  ) |>
+  summarise(
+    COST = sum(COST, na.rm = T),
+    .groups = "drop"
   ) |>
   dplyr::mutate(
     prev_year_COST = lag(COST,1 )
@@ -89,7 +100,7 @@ table_2_scmd <- scmd_icb_bnf_data |>
   stats::na.omit() |>
   dplyr::select(1,4)
 
-table_3_scmd <- scmd_national_monthly |>
+table_4_scmd <- scmd_national_monthly |>
   rename(
     YEAR_MONTH = 1,
     COST = 2
@@ -113,7 +124,7 @@ table_3_scmd <- scmd_national_monthly |>
     )
   )
 
-table_4_scmd <- scmd_icb_bnf_data |>
+table_5_scmd <- scmd_icb_bnf_data |>
   group_by(
     FINANCIAL_YEAR,
     BNF_CHAPTER
@@ -123,7 +134,7 @@ table_4_scmd <- scmd_icb_bnf_data |>
     .groups = "drop"
   )
 
-table_5_scmd <- scmd_icb_bnf_data |>
+table_6_scmd <- scmd_icb_bnf_data |>
   group_by(
     FINANCIAL_YEAR,
     BNF_CHAPTER,
@@ -134,7 +145,7 @@ table_5_scmd <- scmd_icb_bnf_data |>
     .groups = "drop"
   )
 
-table_6_scmd <- scmd_icb_bnf_data |>
+table_7_scmd <- scmd_icb_bnf_data |>
   group_by(
     FINANCIAL_YEAR,
     ICB
@@ -151,7 +162,7 @@ table_6_scmd <- scmd_icb_bnf_data |>
     )
   )
 
-table_7_scmd <- scmd_icb_bnf_data |>
+table_8_scmd <- scmd_icb_bnf_data |>
   group_by(
     FINANCIAL_YEAR,
     ICB,
@@ -174,7 +185,7 @@ table_7_scmd <- scmd_icb_bnf_data |>
 # 5. data manipulation ----------------------------------------------------
 
 #table 1
-table_1a <- table_1_dwh |>
+table_1 <- table_1_dwh |>
   left_join(
     table_1_scmd,
     by = c("Financial Year" = "FINANCIAL_YEAR")
@@ -195,9 +206,32 @@ table_1a <- table_1_dwh |>
     )
   )
 
+#table 2
 table_2 <- table_2_dwh |>
   left_join(
     table_2_scmd,
+    by = c("Financial Year" = "FINANCIAL_YEAR")
+  ) |>
+  select(
+    1, 5, 3, 4, 2
+  ) |>
+  rename(
+    "Hospital prescribing issued within hospitals (GBP)" = 2
+  ) |>
+  rowwise() |>
+  mutate(
+    `Total (GBP)` = sum(
+      across(
+        contains("GBP")
+      ),
+      na.rm = T
+    )
+  )
+
+#table 3
+table_3 <- table_3_dwh |>
+  left_join(
+    table_3_scmd,
     by = c("FINANCIAL_YEAR" = "FINANCIAL_YEAR")
   ) |>
   select(
@@ -206,13 +240,15 @@ table_2 <- table_2_dwh |>
   rename(
     "Financial Year" = 1
   ) 
-  
-table_3 <- table_3_dwh |>
+
+
+#table 4  
+table_4 <- table_4_dwh |>
   mutate(
     `Year Month` = as.character(`Year Month`)
   ) |>
   left_join(
-    table_3_scmd,
+    table_4_scmd,
     by = c("Year Month" = "YEAR_MONTH")
   ) |>
   select(
@@ -231,12 +267,13 @@ table_3 <- table_3_dwh |>
     )
   )
 
-table_4 <- table_4_scmd |>
+#table 5
+table_5 <- table_5_scmd |>
   left_join(
-    table_4_dwh,
+    table_5_dwh,
     by = c(
       "FINANCIAL_YEAR" = "Financial Year",
-      "BNF_CHAPTER" = "BNF Chapter"
+      "BNF_CHAPTER" = "BNF Chapter Code"
       )
   ) |>
   select(
@@ -247,9 +284,9 @@ table_4 <- table_4_scmd |>
       BNF_CHAPTER == "-None-" ~ "Undefined",
       TRUE ~ BNF_CHAPTER
     ),
-    `BNF Chapter Description` = case_when(
-      is.na(`BNF Chapter Description`) ~ "Undefined",
-      TRUE ~ `BNF Chapter Description`
+    `BNF Chapter Name` = case_when(
+      is.na(`BNF Chapter Name`) ~ "Undefined",
+      TRUE ~ `BNF Chapter Name`
     )
   ) |>
   arrange(
@@ -258,7 +295,7 @@ table_4 <- table_4_scmd |>
   ) |>
   rename(
     "Financial Year" = 1,
-    "BNF Chapter" = 2,
+    "BNF Chapter Code" = 2,
     "Hospital prescribing issued within hospitals (GBP)" = 4
   ) |>
   rowwise() |>
@@ -271,14 +308,15 @@ table_4 <- table_4_scmd |>
     )
   ) 
 
-table_4[is.na(table_4)] = 0
+table_5[is.na(table_4)] = 0
 
-table_5 <- table_5_scmd |>
+#table 6
+table_6 <- table_6_scmd |>
   full_join(
-    table_5_dwh,
+    table_6_dwh,
     by = c(
       "FINANCIAL_YEAR" = "Financial Year",
-      "BNF_SECTION" = "BNF Section"
+      "BNF_SECTION" = "BNF Section Code"
     )
   )
 
@@ -290,17 +328,17 @@ scmd_section_lookup <- scmd_icb_bnf_data |>
   distinct() |>
   mutate(BNF = gsub(".*- ", "", BNF))
 
-bnf_chapter_lookup <- table_4 |>
+bnf_chapter_lookup <- table_6 |>
   select(
-    `BNF Chapter`,
-    `BNF Chapter Description`
+    `BNF Chapter Code`,
+    `BNF Chapter Name`
   ) |>
   distinct()
 
-table_5_na <- table_5 |>
+table_6_na <- table_6 |>
   filter(
     is.na(
-      `BNF Chapter`
+      `BNF Chapter Code`
     )
   ) |>
   select(
@@ -315,7 +353,7 @@ table_5_na <- table_5 |>
   left_join(
     bnf_chapter_lookup,
     by = c(
-      "BNF_CHAPTER" = "BNF Chapter"
+      "BNF_CHAPTER" = "BNF Chapter Code"
     )
   ) |>
   select(
@@ -323,20 +361,20 @@ table_5_na <- table_5 |>
   ) |>
   rename(
     "Financial Year" = 1,
-    "BNF Chapter" = 2,
-    "BNF Chapter Description" = 3,
-    "BNF Section" = 4,
-    "BNF Section Description" = 5,
+    "BNF Chapter Code" = 2,
+    "BNF Chapter Name" = 3,
+    "BNF Section Code" = 4,
+    "BNF Section Name" = 5,
     "Hospital prescribing issued within hospitals (GBP)" = 6,
     "Dental prescribing dispensed in the community (GBP)" = 7,
     "Hospital prescribing dispensed in the community (GBP)" = 8,
     "Primary care prescribing dispensed in the community (GBP)" = 9
   )
 
-table_5_non_na <- table_5 |>
+table_6_non_na <- table_6 |>
   filter(
     !is.na(
-      `BNF Chapter`
+      `BNF Chapter Code`
     )
   ) |>
   select(
@@ -344,47 +382,47 @@ table_5_non_na <- table_5 |>
   ) |>
   rename(
     "Financial Year" = 1,
-    "BNF Chapter" = 2,
-    "BNF Chapter Description" = 3,
-    "BNF Section" = 4,
-    "BNF Section Description" = 5,
+    "BNF Chapter Code" = 2,
+    "BNF Chapter Name" = 3,
+    "BNF Section Code" = 4,
+    "BNF Section Name" = 5,
     "Hospital prescribing issued within hospitals (GBP)" = 6,
     "Dental prescribing dispensed in the community (GBP)" = 7,
     "Hospital prescribing dispensed in the community (GBP)" = 8,
     "Primary care prescribing dispensed in the community (GBP)" = 9
   )
 
-table_5 <- table_5_non_na |>
+table_6 <- table_6_non_na |>
   bind_rows(
-    table_5_na
+    table_6_na
   ) |>
   mutate(
-    `BNF Chapter` = case_when(
-      `BNF Chapter` == "-None-" ~ "Undefined",
-      TRUE ~ `BNF Chapter`
+    `BNF Chapter Code` = case_when(
+      `BNF Chapter Code` == "-None-" ~ "Undefined",
+      TRUE ~ `BNF Chapter Code`
     ),
-    `BNF Chapter Description` = case_when(
-      is.na(`BNF Chapter Description`) ~ "Undefined",
-      TRUE ~ `BNF Chapter Description` 
+    `BNF Chapter Name` = case_when(
+      is.na(`BNF Chapter Name`) ~ "Undefined",
+      TRUE ~ `BNF Chapter Name` 
     ),
-    `BNF Section` = case_when(
-      `BNF Section` == "-None-character(0)" ~ "Undefined",
-      TRUE ~ `BNF Section`
+    `BNF Section Code` = case_when(
+      `BNF Section Code` == "-None-character(0)" ~ "Undefined",
+      TRUE ~ `BNF Section Code`
     ),
-    `BNF Section Description` = case_when(
-      `BNF Section Description` == "-None-" ~ "Undefined",
-      TRUE ~ `BNF Section Description`
+    `BNF Section Name` = case_when(
+      `BNF Section Name` == "-None-" ~ "Undefined",
+      TRUE ~ `BNF Section Name`
     ),
-    `BNF Chapter` = case_when(
-      `BNF Chapter` != "Undefined" ~ substr(`BNF Section`, 1, 2),
-      is.na(`BNF Chapter`) ~ substr(`BNF Section`, 1, 2),
-      TRUE ~ `BNF Chapter`
+    `BNF Chapter Code` = case_when(
+      `BNF Chapter Code` != "Undefined" ~ substr(`BNF Section`, 1, 2),
+      is.na(`BNF Chapter Code`) ~ substr(`BNF Section`, 1, 2),
+      TRUE ~ `BNF Chapter Code`
      )
     )|>
   arrange(
     `Financial Year`,
-    `BNF Chapter`,
-    `BNF Section`
+    `BNF Chapter Code`,
+    `BNF Section Code`
   ) |>
   rowwise() |>
   mutate(
@@ -396,12 +434,12 @@ table_5 <- table_5_non_na |>
     )
   ) 
 
-table_5[is.na(table_5)] = 0
+table_6[is.na(table_6)] = 0
 
-#table 6
-table_6 <- table_6_dwh |>
+#table 7
+table_7 <- table_7_dwh |>
   left_join(
-    table_6_scmd,
+    table_7_scmd,
     by = c(
       "Financial Year" = "FINANCIAL_YEAR",
       "ICB" = "ICB"
@@ -423,7 +461,7 @@ table_6 <- table_6_dwh |>
     )
   ) 
 
-table_6[is.na(table_6)] = 0
+table_7[is.na(table_7)] = 0
 
 # get stp population
 ons_stp_pop <- function() {
@@ -464,7 +502,7 @@ stp_pop <- ons_stp_pop() |>
     STP21CDH, POP
   )
 
-table_6 <- table_6 |>
+table_7 <- table_7 |>
   left_join(
     stp_pop,
     by = c(
@@ -478,6 +516,7 @@ table_6 <- table_6 |>
     `Average Cost Per Capita (GBP)` = `Total (GBP)` / Population
   )
 
+#table 8
 table_7_raw <- table_7_scmd |>
   full_join(
     table_7_dwh,
