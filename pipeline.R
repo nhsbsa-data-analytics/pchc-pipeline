@@ -46,15 +46,14 @@ con <- con_nhsbsa(
 # 4. extract data tables from fact table -----------------------------------------
 
 #dwh tables
-table_1_dwh <- table_1_dwh(con) |> filter(`Financial Year` != "2016/2017")
-table_2_dwh <- table_2_dwh(con) |> filter(`Financial Year` != "2016/2017")
-table_3_dwh <- table_3_dwh(con) |> filter(FINANCIAL_YEAR != "2016/2017",
-                                          FINANCIAL_YEAR != "2017/2018")
-table_4_dwh <- table_4_dwh(con) |> filter(`Year Month` >= 201704)
-table_5_dwh <- table_5_dwh(con) |> filter(`Financial Year` != "2016/2017")
-table_6_dwh <- table_6_dwh(con) |> filter(`Financial Year` != "2016/2017")
-table_7_dwh <- table_7_dwh(con) |> filter(`Financial Year` != "2016/2017")
-table_8_dwh <- table_8_dwh(con) |> filter(`Financial Year` != "2016/2017")
+table_1_dwh <- table_1_dwh(con)
+table_2_dwh <- table_2_dwh(con)
+table_3_dwh <- table_3_dwh(con)
+table_4_dwh <- table_4_dwh(con)
+table_5_dwh <- table_5_dwh(con)
+table_6_dwh <- table_6_dwh(con)
+table_7_dwh <- table_7_dwh(con)
+table_8_dwh <- table_8_dwh(con)
 
 
 # disconnect from DWH
@@ -1027,11 +1026,4 @@ rmarkdown::render("hrt-narrative.Rmd",
                                        gsub(" ", "_", ltst_month_tidy),
                                        "_v001.docx"))
 
-rmarkdown::render("hrt-background.Rmd",
-                  output_format = "html_document",
-                  output_file = "outputs/hrt-background-info-methodology-v001.html")
-
-rmarkdown::render("hrt-background.Rmd",
-                  output_format = "word_document",
-                  output_file = "outputs/hrt-background-info-methodology-v001.docx")
 

@@ -136,8 +136,7 @@ These statistics use the therapeutic classifications defined in the BNF to group
 
 The ICBs shown in the statistical summary tables of this release are based on the NHS organisational structure on 31 March 2022. 
 
-ICBs are health geographies that are formed by NHS organisations, local councils, and others to set out proposals to improve health and care for the local population. In these statistics the STP given is that of the dispensing contractor and not the prescribing organisation. These geographies
-are taken from NHSBSA administrative records and relate to the commissioning of services for NHS patients, and not the physical location of a dispensing contractor, or the patient that has received the drug, appliance, or medical device.
+ICBs are a statutory NHS organisation responsible for developing a plan in collaboration with NHS trusts/foundation trusts and other system partners for meeting the health needs of the population, managing the NHS budget and arranging for the provision of health services in the defined area. They took over the functions of Sustainability and Transformation Partnerships (STPs) in July 2022.
 
 Prescribing volumes are not included in this publication. Unlike in the primary care dataset, where item level data is available, in secondary care, data is collated as quantities issued. The concept of a prescription item does not exist for secondary care medicines data.
 
@@ -148,64 +147,390 @@ Prescribing volumes are not included in this publication. Unlike in the primary 
 The charts in this report are interactive and allow you to isolate the topics that you are interested in by selecting or deselecting a series from the legend of the chart. For example, if you only want to view a single series on a chart, you can click the series names  you are not interested in within the legend of the chart. This will remove the item from the charts. If you wish to subsequently include them, just click their legend entry again.
 
 ### 2.1 Costs by setting
-```{r fy_summary}
+
+#### Figure 1: Total costs by setting between 2017/2018 and 2021/2022 using actual costs in primary care
+```{r fy_actual_costs}
+
+chart_data <- table_1 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        signif(
+      Cost, 
+      3
+    ),
+    big.mark = ","
+  )
+  )
+
+figure_1 <- highchart() |>
+  hc_add_series(
+    name = "Primary care in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Primary care prescribing dispensed in the community (GBP)"),
+    color = "#009639",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Issued in hospitals",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing issued within hospitals (GBP)"),
+    color = "#005EB8",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Hospital in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing dispensed in the community (GBP)"),
+    color = "#7C2855",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Dental in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Dental prescribing dispensed in the community (GBP)"),
+    color = "#768692",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_xAxis(
+    type = "category",
+    title =list(
+      text = "Financial year"
+    )
+  ) |>
+  hc_yAxis(
+    title =list(
+      text = "Costs (GBP)"
+    )
+  ) |>
+  hc_plotOptions(
+    column = list(
+      stacking = "normal"
+    )
+  ) |>
+  highcharter::hc_credits(enabled = TRUE) |>
+  hc_tooltip(
+    shared = T,
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>\u00A3{point.sf}</b><br/>'  )
 
 figure_1
 
 ```
 
-Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table One](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table One](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-The cost of items prescribed in primary care in England in 2020/21 was £9.42 billion, 55.0% of total expenditure. In 2016/17 the cost of items prescribed in primary care in England was £8.97 billion, 58.5% of total expenditure. 
+The actual cost of items prescribed in primary care in England in 2021/22 was £8.90 billion, 50.0% of total expenditure. In 2017/18 the actual cost of items prescribed in primary care in England was £8.26 billion, 54.9% of total expenditure. 
 
-The cost of items dispensed in hospitals in England in 2020/21 was £7.59 billion, 44.3% of total expenditure. In 2016/17 the cost of items dispensed in hospitals in England was £6.19 billion, 40.4% of total expenditure. 
+The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billion, 49.3% of total expenditure. In 2017/18 the cost of items dispensed in hospitals in England was £6.63 billion, 44.1☺% of total expenditure. 
 
-The central rebate accounted for £462 million in financial year 2020/21. This would reduce the overall expenditure in hospitals for 2020/21 to £7.13 billion. This figure has not been accounted for in the charts and summary tables as it is only available for 2020/21 and is not available at a more granular level than overall amount.
+The central rebate accounted for £495 million in financial year 2021/22. This would reduce the overall expenditure in hospitals for 2021/22 to £8.27 billion. This figure has not been accounted for in the charts and summary tables as it is not available at a more granular level than overall amount.
 
-```{r fy_changes}
+#### Figure 2: Total costs by setting between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) in primary care
+```{r fy_nic}
+chart_data <- table_2 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        signif(
+      Cost, 
+      3
+    ),
+    big.mark = ","
+  )
+  )
+
+figure_2 <- highchart() |>
+  hc_add_series(
+    name = "Primary care in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Primary care prescribing dispensed in the community (GBP)"),
+    color = "#009639",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Issued in hospitals",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing issued within hospitals (GBP)"),
+    color = "#005EB8",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Hospital in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing dispensed in the community (GBP)"),
+    color = "#7C2855",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Dental in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Dental prescribing dispensed in the community (GBP)"),
+    color = "#768692",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_xAxis(
+    type = "category",
+    title =list(
+      text = "Financial year"
+    )
+  ) |>
+  hc_yAxis(
+    title =list(
+      text = "Costs (GBP)"
+    )
+  ) |>
+  hc_plotOptions(
+    column = list(
+      stacking = "normal"
+    )
+  ) |>
+  highcharter::hc_credits(enabled = TRUE) |>
+  hc_tooltip(
+    shared = T,
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>\u00A3{point.sf}</b><br/>'  )
 
 figure_2
 
 ```
 
-Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Two](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Two](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-The cost of items within primary care in the community in England in 2020/21 was £9.42 billion. This was a 3.79% increase of £344 million from £9.08 billion in 2019/20 and a 5.03% increase of £451 million from £8.97 billion in 2016/17.
+The NIC of items prescribed in primary care in England in 2021/22 was £9.49 billion, 51.6% of total expenditure. In 2017/18 the actual cost of items prescribed in primary care in England was £8.88 billion, 56.6% of total expenditure. 
 
-The cost of items dispensed in hospitals in England in 2020/21 was £7.59 billion. This was a 5.93% increase of £425 million from £7.17 billion in 2019/20 and a 22.7% increase of £1.40 billion from £6.19 billion in 2016/17.
 
-In 2020/21 the total costs paid for drugs, dressing, appliances, and medical devices was £17.1 billion. This was an increase of 4.56% from the £16.4 billion paid in 2019/20 and an increase of 11.7% from the £15.3 billion paid in 2016/17.
+#### Figure 3: Percentage change in costs from previous financial year by setting between between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) in primary care
+```{r fy_changes}
 
-```{r monthly_summary}
+chart_data <- table_3 |>
+  pivot_longer(
+    cols = contains("%"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        round(signif(
+      Cost, 
+      3
+    ),2),
+    big.mark = ","
+  )
+  )
+
+figure_3 <- highchart() |>
+  hc_add_series(
+    name = "Primary care in the community",
+    type = "line",
+    data = chart_data |> filter(Area == "Primary care prescribing dispensed in the community (%)"),
+    color = "#009639",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Issued in hospitals",
+    type = "line",
+    data = chart_data |> filter(Area == "Hospital prescribing issued within hospitals (%)"),
+    color = "#005EB8",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Hospital in the community",
+    type = "line",
+    data = chart_data |> filter(Area == "Hospital prescribing dispensed in the community (%)"),
+    color = "#7C2855",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Dental in the community",
+    type = "line",
+    data = chart_data |> filter(Area == "Dental prescribing dispensed in the community (%)"),
+    color = "#768692",
+    hcaes(
+      x = `Financial Year`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_xAxis(
+    type = "category",
+    title =list(
+      text = "Financial year"
+    )
+  ) |>
+  hc_yAxis(
+    title =list(
+      text = "Change in costs (%)"
+    )
+  ) |>
+  hc_plotOptions(
+    column = list(
+      stacking = "normal"
+    )
+  ) |>
+  hc_tooltip(
+    shared = T,
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.sf}%</b><br/>'
+  ) |>
+  highcharter::hc_credits(enabled = TRUE)
 
 figure_3
 
 ```
 
-Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Three](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Three](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-In March 2021, the total actual costs paid for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England stood at £750 million. This in an increase of 14.8% on the £654 million paid in March 2020 and an increase of 31.5% on the £571 million paid in March 2017. 
+The cost of items within primary care in the community in England in 2021/22 was £9.49 billion. This was a 0.74% increase of £70.0 million from £9.42 billion in 2020/21 and a 6.93% increase of £616 million from £8.88 billion in 2017/18.
 
-<!-- ### 2.2 Top 10 prescribed medicines in hospitals -->
+The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billion. This was a 16.8% increase of £1.26 billion from £7.51 billion in 2020/21 and a 32.2% increase of £2.13 billion from £6.63 billion in 2017/18.
 
-<!-- **Table 1: Top 10 prescribed medicines in hospitals by actual costs** -->
+In 2021/22 the total costs paid for drugs, dressing, appliances, and medical devices was £18.4 billion. This was an increase of 7.86% from the £17.0 billion paid in 2020/21 and an increase of 15.9% from the £15.7 billion paid in 2017/18.
 
-<!-- ```{r top_atc} -->
+#### Figure 4: Total costs by setting between April 2017 and March 2022 using Net Ingredient Costs (NIC) in primary care
+```{r monthly_summary}
 
-<!-- kable(kable_1, align=c('l', 'r')) %>% -->
-<!--   kable_styling(latex_options = "striped") -->
+chart_data <- table_4 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        round(signif(
+      Cost, 
+      3
+    ),2),
+    big.mark = ","
+  ),
+  `Year Month` = as.Date(
+    paste(`Year Month`,"01",sep=""),
+    format = "%Y%m%d"
+  )
+  )
 
-<!-- ``` -->
-
-<!-- Table 1 lists medicines under the World Health Organization (WHO) Anatomical Therapeutic Chemical (ATC) classification system. In the ATC classification system, the active substances are divided into different groups according to the organ or system on which they act and their therapeutic, pharmacological and chemical properties. Drugs are classified in groups at five different levels. -->
-
-<!-- Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Four](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx) -->
-
-<!-- In 2020/21 Aflibercept accounted for £277 million of the total actual costs within hospitals. This was 3.65% of the total costs of £7.59 billion. The top 10 substances by WHO ATC in 2020/21 accounted for 21.8% of these total costs in hospitals at £1.66 billion. -->
-
-### 2.2 Costs by BNF Chapter
-
-```{r bnf_summary}
+figure_4 <- highchart() |>
+  hc_add_series(
+    name = "Primary care in the community",
+    type = "line",
+    data = chart_data |> filter(Area == "Primary care prescribing dispensed in the community (GBP)"),
+    color = "#009639",
+    hcaes(
+      x = `Year Month`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Issued in hospitals",
+    type = "line",
+    data = chart_data |> filter(Area == "Hospital prescribing issued within hospitals (GBP)"),
+    color = "#005EB8",
+    hcaes(
+      x = `Year Month`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Hospital in the community",
+    type = "line",
+    data = chart_data |> filter(Area == "Hospital prescribing dispensed in the community (GBP)"),
+    color = "#7C2855",
+    hcaes(
+      x = `Year Month`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_add_series(
+    name = "Dental in the community",
+    type = "line",
+    data = chart_data |> filter(Area == "Dental prescribing dispensed in the community (GBP)"),
+    color = "#768692",
+    hcaes(
+      x = `Year Month`,
+      y = Cost,
+      sf = sf
+    )
+  ) |>
+  hc_xAxis(
+    type = "datetime",
+    title =list(
+      text = "Month"
+    )
+  ) |>
+  hc_yAxis(
+    title =list(
+      text = "Costs (GBP)"
+    )
+  ) |>
+  hc_plotOptions(
+    line = list(
+      marker = list(
+        enabled = FALSE
+      )
+    )
+  ) |>
+  hc_tooltip(
+    shared = T,
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>\u00A3{point.sf}</b><br/>'
+  ) |>
+  highcharter::hc_credits(enabled = TRUE)
 
 figure_4
 
@@ -213,77 +538,473 @@ figure_4
 
 Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Four](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
 
-In 2020/21 the largest single spend for a BNF Chapter in any setting was for medicines in chapter 8 - Malignant Disease and Immunosuppression issued in hospitals at £2.61 billion. This represents 34.4% of the total spend within hospitals. This is also the BNF Chapter with the highest costs across all combined settings in 2020/21 at £2.80 billion, 16.3% of the total spend of £17.1 billion.
+In March 2022, the total actual costs paid for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England stood at £814 million. This in an increase of 11.8% on the £728 million paid in March 2021 and an increase of 40.8% on the £578 million paid in March 2018. 
 
-Within primary care in the community in 2020/21 chapter 4 - Central Nervous System accounted for the largest spend at £1.67 billion. This was 17.7% of the total costs in primary care prescribing dispensed in the community.
+### 2.2 Costs by BNF Chapter
 
-Within hospitals in 2020/21 there was a spend of £342 million which is not accounted for under any of the BNF Chapters. These are drugs manufactured as specials, dressing, appliances, and medical devices which are not authored on the Dictionary of Medicines and Devices (dm+d).
+#### Figure 5: Total costs by BNF Chapter in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+```{r bnf_summary}
 
-```{r bnf_section_summary}
+
+chart_data <- table_5 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        round(signif(
+      Cost, 
+      3
+    ),2),
+    big.mark = ","
+  )
+  ) |>
+  filter(
+    `Financial Year` == max(`Financial Year`)
+  )
+
+figure_5 <- highchart() |>
+  hc_add_series(
+    name = "Primary care in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Primary care prescribing dispensed in the community (GBP)"),
+    color = "#009639",
+    hcaes(
+      x = `BNF Chapter Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Chapter Name`
+    )
+  ) |>
+  hc_add_series(
+    name = "Issued in hospitals",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing issued within hospitals (GBP)"),
+    color = "#005EB8",
+    hcaes(
+      x = `BNF Chapter Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Chapter Name`
+    )
+  ) |>
+  hc_add_series(
+    name = "Hospital in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing dispensed in the community (GBP)"),
+    color = "#7C2855",
+    hcaes(
+      x = `BNF Chapter Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Chapter Name`
+    )
+  ) |>
+  hc_add_series(
+    name = "Dental in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Dental prescribing dispensed in the community (GBP)"),
+    color = "#768692",
+    hcaes(
+      x = `BNF Chapter Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Chapter Name`
+    )
+  ) |>
+  hc_yAxis(
+    title =list(
+      text = "Costs (GBP)"
+    )
+  ) |>
+  hc_xAxis(
+    type = "category",
+    title =list(
+      text = "BNF Chapter"
+    )
+  ) |>
+  hc_plotOptions(
+    column = list(
+      stacking = "normal"
+    )
+  ) |>
+  hc_tooltip(
+    shared = T,
+    headerFormat = '{point.key}: {point.point.desc}<br>',
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>\u00A3{point.sf}</b><br/>'
+  ) |>
+  highcharter::hc_credits(enabled = TRUE)
 
 figure_5
 
 ```
 
-Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Five](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Five](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-In 2020/21 the largest single spend for a BNF Section in any setting was for medicines in section 0801 - Cytotoxic Drugs issued in hospitals at £1.82 billion. This represents 24.0% of the total spend within hospitals.
+In 2021/22 the largest single spend for a BNF Chapter in any setting was for medicines in chapter 8 - Malignant Disease and Immunosuppression issued in hospitals at £2.95 billion. This represents 33.6% of the total spend within hospitals. This is also the BNF Chapter with the highest costs across all combined settings in 2020/21 at £3.11 billion, 16.9% of the total spend of £18.4 billion.
 
-Within primary care in the community in 2020/21 section 0601 - Drugs Used in Diabetes accounted for the largest spend at £1.19 billion. This was 12.6% of the total costs in primary care prescribing dispensed in the community.
+Within primary care in the community in 2021/22 chapter 2 - Cardiovascular System accounted for the largest spend at £1.61 billion. This was 17.0% of the total costs in primary care prescribing dispensed in the community.
 
-### 2.3 Costs by STP
+Within hospitals in 2021/22 there was a spend of £382 million which is not accounted for under any of the BNF Chapters. These are drugs manufactured as specials, dressing, appliances, and medical devices which are not authored on the Dictionary of Medicines and Devices (dm+d).
 
-```{r stp_summary}
+#### Figure 6: Top 10 BNF Sections by spend across all settings in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+```{r bnf_section_summary}
+
+chart_data_top_n <- table_6 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        round(signif(
+      Cost, 
+      3
+    ),2),
+    big.mark = ","
+  )
+  ) |>
+  filter(
+    `Financial Year` == max(`Financial Year`)
+  ) |>
+  filter(
+    Area == "Total (GBP)"
+  ) |>
+  top_n(
+    10,
+    Cost
+  ) |>
+  arrange(
+    desc(Cost)
+  )
+
+
+chart_data <- table_6 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        round(signif(
+          Cost, 
+          3
+        ),2),
+        big.mark = ","
+      )
+  ) |>
+  filter(
+    `Financial Year` == max(`Financial Year`),
+    `BNF Section Code` %in% chart_data_top_n$`BNF Section Code`
+  ) |>
+  arrange(match(`BNF Section Code`, c(chart_data_top_n$`BNF Section Code`)))
+
+figure_6 <- highchart() |>
+  hc_add_series(
+    name = "Primary care in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Primary care prescribing dispensed in the community (GBP)"),
+    color = "#009639",
+    hcaes(
+      x = `BNF Section Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Section Name`
+    )
+  ) |>
+  hc_add_series(
+    name = "Issued in hospitals",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing issued within hospitals (GBP)"),
+    color = "#005EB8",
+    hcaes(
+      x = `BNF Section Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Section Name`
+    )
+  ) |>
+  hc_add_series(
+    name = "Hospital in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing dispensed in the community (GBP)"),
+    color = "#7C2855",
+    hcaes(
+      x = `BNF Section Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Section Name`
+    )
+  ) |>
+  hc_add_series(
+    name = "Dental in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Dental prescribing dispensed in the community (GBP)"),
+    color = "#768692",
+    hcaes(
+      x = `BNF Section Code`,
+      y = Cost,
+      sf = sf,
+      desc = `BNF Section Name`
+    )
+  ) |>
+   hc_xAxis(
+     type = "category",
+     title =list(
+      text = "BNF Section"
+     )
+   ) |>
+  hc_yAxis(
+    title =list(
+      text = "Costs (GBP)"
+    )
+  ) |>
+  hc_plotOptions(
+    column = list(
+      stacking = "normal"
+    )
+  ) |>
+  hc_tooltip(
+    shared = T,
+    headerFormat = '{point.key}: {point.point.desc}<br>',
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>\u00A3{point.sf}</b><br/>'
+  ) |>
+  highcharter::hc_credits(enabled = TRUE)
 
 figure_6
 
 ```
 
-Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Six](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Six](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-Cumbria and North East was the STP with the highest costs across all settings of £1.03 billion in 2020/21. 
+In 2021/22 the largest single spend for a BNF Section in any setting was for medicines in section 0801 - Cytotoxic Drugs issued in hospitals at £1.98 billion. This represents 22.6% of the total spend within hospitals.
 
-Data under the 'Undefined' STP relate to costs in both the primary and secondary care datasets which we have been unable to map to a STP.
+Within primary care in the community in 2021/22 section 0601 - Drugs Used in Diabetes accounted for the largest spend at £1.25 billion. This was 13.2% of the total costs in primary care prescribing dispensed in the community.
 
-Data around dental in the community has not been included in figure 5 as dental data is captured under a national code and not available at STP level.
+### 2.3 Costs by ICB
 
-STP costs in secondary care are based on the STP in which the hospital is located. Not all spend is specifically for that STP (e.g. patients may be referred to a hospital outside of their STP).
+#### Figure 7: Total costs by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+```{r stp_summary}
 
-```{r stp_per_capita}
+chart_data_order <- table_7 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  filter(
+    `Financial Year` == max(`Financial Year`)
+  ) |>
+  filter(
+    Area == "Total (GBP)"
+  ) |>
+  arrange(
+    desc(Cost)
+  )
+
+
+chart_data <- table_7 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        round(signif(
+          Cost, 
+          3
+        ),2),
+        big.mark = ","
+      )
+  ) |>
+  filter(
+    `Financial Year` == max(`Financial Year`)
+  ) |>
+  arrange(match(ICB, c(chart_data_order$ICB)))
+
+figure_7 <- highchart() |>
+  hc_add_series(
+    name = "Primary care in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Primary care prescribing dispensed in the community (GBP)"),
+    color = "#009639",
+    hcaes(
+      x = `ICB Code`,
+      y = Cost,
+      sf = sf,
+      icb = `ICB`
+    )
+  ) |>
+  hc_add_series(
+    name = "Issued in hospitals",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing issued within hospitals (GBP)"),
+    color = "#005EB8",
+    hcaes(
+      x = `ICB Code`,
+      y = Cost,
+      sf = sf,
+      icb = `ICB`
+    )
+  ) |>
+  hc_add_series(
+    name = "Hospital in the community",
+    type = "column",
+    data = chart_data |> filter(Area == "Hospital prescribing dispensed in the community (GBP)"),
+    color = "#7C2855",
+    hcaes(
+      x = `ICB Code`,
+      y = Cost,
+      sf = sf,
+      icb = `ICB`
+    )
+  ) |>
+  hc_xAxis(
+    type = "category",
+    title =list(
+      text = "ICB"
+    )
+  ) |>
+  hc_yAxis(
+    title =list(
+      text = "Costs (GBP)"
+    )
+  ) |>
+  hc_plotOptions(
+    column = list(
+      stacking = "normal"
+    )
+  ) |>
+  hc_tooltip(
+    shared = T,
+    headerFormat = '{point.key}: {point.point.icb}<br>',
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>\u00A3{point.sf}</b><br/>'
+  ) |>
+  highcharter::hc_credits(enabled = TRUE)
 
 figure_7
 
 ```
 
-Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Six](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Seven](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-The average cost per capita for medicines issued in all settings in England in 2020/21 was £303. This is an increase from £290 in 2019/20 and an increase from £271 in 2016/17.
+NHS Greater Manchester was the ICB with the highest costs across all settings of £1.11 billion in 2021/22. 
 
-North London Partners in Health and Care had the largest average per capita costs in 2020/21 at £470, Hertfordshire and West Essex the lowest at £216. 
+Data under the 'Undefined' ICB relate to costs in both the primary and secondary care datasets which we have been unable to map to a ICB.
 
----
+Data around dental in the community has not been included in figure 5 as dental data is captured under a national code and not available at ICB level.
 
-## 3. Changes to this publication
+ICB costs in secondary care are based on the ICB in which the hospital is located. Not all spend is specifically for that ICB (e.g. patients may be referred to a hospital outside of their ICB).
 
-Following taking over this publication from NHS Digital the  NHSBSA have changed the methodology used in these statistics and expanded their content, including:
+#### Figure 8: Average costs per capita by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+```{r stp_per_capita}
 
-* Secondary Care Medicines Data is now provided by Rx-Info. Previous data was provided by IQVIA, who collect data on issues from pharmacies in most hospitals in England and apply costs to this data using the Drug Tariff and standard price lists. Therefore, all costs used previously were medicine costs at list price, also known as Net Ingredient Cost (NIC) in Primary Care – this is the basic price of a drug excluding VAT and is not necessarily the price the NHS paid. Data provided by Rx-Info includes the actual cost paid by NHS hospitals for medicines (including applicable VAT).
+chart_data <- table_7 |>
+  pivot_longer(
+    cols = contains("GBP"),
+    names_to = "Area",
+    values_to = "Cost"
+  ) |>
+  mutate(
+    sf = 
+      prettyNum(
+        round(signif(
+          Cost, 
+          3
+        ),2),
+        big.mark = ","
+      )
+  ) |>
+  filter(
+    `Financial Year` == max(`Financial Year`),
+    Area == "Average Cost Per Capita (GBP)"
+  ) |>
+  filter(`ICB Code` != "-") |>
+  arrange(desc(Cost)) |>
+  mutate(total_cost = Cost * Population)
 
-* Offering a monthly view of national costs by setting.
+ave_per_capita <- sum(chart_data$total_cost, na.rm = T)/sum(chart_data$Population, na.rm = T)
 
-* Changing from only presenting data at a national level to presenting costs with financial years down to the lower drug level of BNF Section.
+chart_data <- chart_data |>
+  mutate(ave = ave_per_capita,
+         sf_ave = prettyNum(as.numeric(signif(ave,3)), big.mark = ","))
 
-* Data is now presented down to STP level alongside the estimated population of each STP.
-
-```{r comparison chart}
+figure_8 <- highchart() |>
+  hc_add_series(
+    name = "ICB",
+    type = "column",
+    data = chart_data,
+    color = "#005EB8",
+    hcaes(
+      x = `ICB Code`,
+      y = `Cost`,
+      sf = sf,
+      icb = ICB
+    )
+  ) |>
+  hc_add_series(
+    name = "National average",
+    type = "line",
+    data = chart_data,
+    color = "black",
+    hcaes(
+      x = `ICB Code`,
+      y = ave,
+      sf = sf_ave
+    )
+  ) |>
+  hc_xAxis(
+    type = "category",
+    title = list(
+      text = "ICB"
+    )
+  ) |>
+  hc_yAxis(
+    title =list(
+      text = "Costs (GBP)"
+    )
+  ) |>
+  hc_plotOptions(
+    column = list(
+      stacking = "normal"
+    ),
+    line = list(
+      marker = list(
+        enabled = FALSE
+      )
+    )
+  ) |>
+  hc_tooltip(
+    shared = T,
+    headerFormat = '{point.key}: {point.point.icb}<br>',
+    pointFormat = '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>\u00A3{point.sf}</b><br/>'
+  ) |>
+  highcharter::hc_credits(enabled = TRUE)
 
 figure_8
 
 ```
 
-Figure 8 provides a comparison of the costs in hospitals under the old methodology available from [NHS Digital](https://digital.nhs.uk/data-and-information/publications/statistical/prescribing-costs-in-hospitals-and-the-community/2019-2020) to those under the new methodology of reporting by actual costs (including applicable VAT).
+Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Seven](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-In 2019/20 the gap between actual costs and costs at list price was £4.51 billion. This means in 2019/20 actual costs were 38.6% less than those reported using list price. This gap has widened every year from £2.07 billion (25.1%) in 2016/17.
+The average cost per capita for medicines issued in all settings in England in 2021/22 was £324. This is an increase from £301 in 2020/21 and an increase from £274 in 2017/18.
+
+NHS Birmingham and Solihull was the ICB with the largest average per capita costs in 2021/22 at £516, NHS Hertfordshire and West Essex the lowest at £224. 
+
+---
+
+## 3. Changes to this publication
+
+We have added an additional table and figure which now includes the actual costs in primary care. A definition of actual costs can be found in section 1.2 of this publication.
 
 For full details of the changes made please refer to the [Background Information and Methodology](https://nhsbsa.nhs.uk/sites/default/files/2021-11/PCHC_2021_background_information_methodology_v001.pdf) note released alongside these statistics.
 
@@ -307,27 +1028,25 @@ The primary care data used in this publication comes from the NHSBSA Enterprise 
 
 ### 4.3 Time periods reported in this publication
 
-From the 2020/21 publication onward the starting point has switched to April 2016. Secondary care data provided by Rx-Info is only available back to this point. This differs from other NHSBSA releases but the time series will be expanded each year until a full rolling 10 year period is achieved.
+From the 2021/22 publication onward the starting point has switched to April 2017. Secondary care data provided by Rx-Info is only available back to this point. As the RX-Info Define database only holds data from up to 5 years ago, this publication will present a rolling 5 year timescale.
 
 ### 4.4 Geographies included in this publication
 
-Sustainability and transformation partnerships (STP) are health geographies that are formed by NHS organisations, local councils, and others to set out proposals to improve health and care for the local population. 
+Integrated Care Boards (STP) are health geographies that are formed by NHS organisations, local councils, and others to set out proposals to improve health and care for the local population. 
 
-In primary care data the the STP geographies show use NHSBSA administrative records, not geographical boundaries, and more closely reflect the operational organisation of prescribing organisations than other geographical data sources. Within the secondary care data STP is provided by Rx-Info who use NHS Digital Organisation Data Service (ODS) as their source.
-
-This publication presents the STP names as described by the [Office of National Statistics (ONS)](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates) and not as how they are stored in NHSBSA or Rx-Info data. This is different from other NHSBSA publications.
+In primary care data the the ICB geographies show use NHSBSA administrative records, not geographical boundaries, and more closely reflect the operational organisation of prescribing organisations than other geographical data sources. Within the secondary care data ICB is provided by Rx-Info who use NHS Digital Organisation Data Service (ODS) as their source.
 
 ### 4.5 Population statistics included in this publication
 
-Populations by STP throughout this report are the same for each year and come from the latest [ONS population estimates](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates).
+Populations by ICB throughout this report are the same for each year and come from the latest [ONS population estimates](https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2fclinicalcommissioninggroupmidyearpopulationestimates%2fmid2020sape23dt6a/sape23dt6amid2020ccg2021estimatesunformatted.xlsx).
 
 ### 4.6 Measures of average
 
-Per capita costs measure the average costs across all settings per person in a given area (England, STP) in the specified year. It is calculated by dividing the area's total costs by its total population.
+Per capita costs measure the average costs across all settings per person in a given area (England, ICB) in the specified year. It is calculated by dividing the area's total costs by its total population.
 
 ### 4.7 Planned changes to this publication
 
-This is an experimental official statistic release. Experimental statistics are newly developed or innovative statistics. These are published so that users and stakeholders can be involved in the assessment of their suitability and quality at an early stage. More information on how users can give us their feedback can be found in section 7 of this summary. We will regularly be reviewing the methodology used within the statistics.
+This is an experimental official statistic release. Experimental statistics are newly developed or innovative statistics. These are published so that users and stakeholders can be involved in the assessment of their suitability and quality at an early stage. More information on how users can give us their feedback can be found in section 6 of this summary. We will regularly be reviewing the methodology used within the statistics.
 
 ### 4.8 Monthly SCMD data
 
@@ -335,15 +1054,7 @@ NHSBSA Information Services also release a monthly [data set](https://opendata.n
 
 ---
 
-## 5. Statistical disclosure control
-
-Information about our statistical disclosure control protocol [can be found on our website](https://www.nhsbsa.nhs.uk/policies-and-procedures).
-
-The high level figures in this statistical summary have been rounded where appropriate for clarity, in most cases to three significant figures. This is to make this narrative as accessible as possible to all readers. The summary tables released with this publication allow users to investigate this data at lower levels of granularity. Figures in the supplementary tables have not been rounded.
-
----
-
-## 6. Accessibility
+## 5. Accessibility
 
 ### How to request content in an accessible format {.toc-ignore}
 
@@ -363,13 +1074,13 @@ View our [Accessibility statement for Official Statistics Narratives](https://ww
 
 ---
 
-## 7. Feedback and contact us
+## 6. Feedback and contact us
 
 Following the publication of this release the NHSBSA will be launching a public consultation on the data used in these statistics and their content. You can find details of this consultation on our [website](https://www.nhsbsa.nhs.uk/announcements/consultations-and-user-engagement).
 
 Feedback is important to us; we welcome any questions and comments relating to these statistics. 
 
-You can complete a [short survey about this publication](https://online1.snapsurveys.com/Prescribing_Costs_in_Hospitals_Community_Feedback) to help us improve the Official Statistics that we produce. All responses will remain anonymous and individuals will not be identifiable in any report that we produce.
+You can complete a [short survey about this publication](https://online1.snapsurveys.com/Official_Statistics_Feedback) to help us improve the Official Statistics that we produce. All responses will remain anonymous and individuals will not be identifiable in any report that we produce.
 
 You can view our [privacy policy](https://www.nhsbsa.nhs.uk/our-policies/privacy) on our website to see how your data is used and stored.
 
