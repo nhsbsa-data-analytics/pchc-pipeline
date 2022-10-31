@@ -1013,17 +1013,12 @@ openxlsx::saveWorkbook(wb,
 
 # 8. render markdowns ------------------------------------------------------
 
-rmarkdown::render("hrt-narrative.Rmd",
+rmarkdown::render("pres-costs-hosp-comm-v1.Rmd",
                   output_format = "html_document",
-                  output_file = paste0("outputs/hrt_",
-                                       gsub(" ", "_", ltst_month_tidy),
-                                       "_v001.html"))
+                  output_file = "outputs/pchc-2021-2022-narrative-v001.html")
 
 
-rmarkdown::render("hrt-narrative.Rmd",
+rmarkdown::render("pres-costs-hosp-comm-v1.Rmd",
                   output_format = "word_document",
-                  output_file = paste0("outputs/hrt_",
-                                       gsub(" ", "_", ltst_month_tidy),
-                                       "_v001.docx"))
-
+                  output_file = "outputs/pchc-2021-2022-narrative-v001.docx")
 
