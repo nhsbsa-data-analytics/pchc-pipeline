@@ -46,14 +46,15 @@ con <- con_nhsbsa(
 # 4. extract data tables from fact table -----------------------------------------
 
 #dwh tables
-table_1_dwh <- table_1_dwh(con) |> filter(`Financial Year` != "	2016/2017")
-table_2_dwh <- table_2_dwh(con) |> filter(`Financial Year` != "	2016/2017")
-table_3_dwh <- table_3_dwh(con) |> filter(`Financial Year` != "	2016/2017")
-table_4_dwh <- table_4_dwh(con) |> filter(`Financial Year` != "	2016/2017")
-table_5_dwh <- table_5_dwh(con) |> filter(`Financial Year` != "	2016/2017")
-table_6_dwh <- table_6_dwh(con) |> filter(`Financial Year` != "	2016/2017")
-table_7_dwh <- table_7_dwh(con) |> filter(`Financial Year` != "	2016/2017")
-table_8_dwh <- table_8_dwh(con) |> filter(`Financial Year` != "	2016/2017")
+table_1_dwh <- table_1_dwh(con) |> filter(`Financial Year` != "2016/2017")
+table_2_dwh <- table_2_dwh(con) |> filter(`Financial Year` != "2016/2017")
+table_3_dwh <- table_3_dwh(con) |> filter(FINANCIAL_YEAR != "2016/2017",
+                                          FINANCIAL_YEAR != "2017/2018")
+table_4_dwh <- table_4_dwh(con) |> filter(`Year Month` >= 201704)
+table_5_dwh <- table_5_dwh(con) |> filter(`Financial Year` != "2016/2017")
+table_6_dwh <- table_6_dwh(con) |> filter(`Financial Year` != "2016/2017")
+table_7_dwh <- table_7_dwh(con) |> filter(`Financial Year` != "2016/2017")
+table_8_dwh <- table_8_dwh(con) |> filter(`Financial Year` != "2016/2017")
 
 
 # disconnect from DWH
@@ -308,7 +309,7 @@ table_5 <- table_5_scmd |>
     )
   ) 
 
-table_5[is.na(table_4)] = 0
+table_5[is.na(table_5)] = 0
 
 #table 6
 table_6 <- table_6_scmd |>
@@ -414,8 +415,8 @@ table_6 <- table_6_non_na |>
       TRUE ~ `BNF Section Name`
     ),
     `BNF Chapter Code` = case_when(
-      `BNF Chapter Code` != "Undefined" ~ substr(`BNF Section`, 1, 2),
-      is.na(`BNF Chapter Code`) ~ substr(`BNF Section`, 1, 2),
+      `BNF Chapter Code` != "Undefined" ~ substr(`BNF Section Code`, 1, 2),
+      is.na(`BNF Chapter Code`) ~ substr(`BNF Section Code`, 1, 2),
       TRUE ~ `BNF Chapter Code`
      )
     )|>
@@ -517,27 +518,27 @@ table_7 <- table_7 |>
   )
 
 #table 8
-table_7_raw <- table_7_scmd |>
+table_8_raw <- table_8_scmd |>
   full_join(
-    table_7_dwh,
+    table_8_dwh,
     by = c(
       "FINANCIAL_YEAR" = "Financial Year",
-      "BNF_SECTION" = "BNF Section",
+      "BNF_SECTION" = "BNF Section Code",
       "ICB" = "ICB"
     )
   ) |>
   select(
-   -`BNF Chapter Description`
+   -`BNF Chapter Name`
   ) |>
   left_join(
     bnf_chapter_lookup,
     by = c(
-      "BNF_CHAPTER" = "BNF Chapter"
+      "BNF_CHAPTER" = "BNF Chapter Code"
     )
   ) |>
   mutate(
     BNF_CHAPTER = case_when(
-      is.na(BNF_CHAPTER) ~ `BNF Chapter`,
+      is.na(BNF_CHAPTER) ~ `BNF Chapter Code`,
       TRUE ~ BNF_CHAPTER
     )
   ) |>
@@ -549,9 +550,9 @@ table_7_raw <- table_7_scmd |>
       BNF_CHAPTER == "-None-" ~ "Undefined",
       TRUE ~ BNF_CHAPTER
     ),
-    `BNF Chapter Description` = case_when(
-      is.na(`BNF Chapter Description`) ~ "Undefined",
-      TRUE ~ `BNF Chapter Description` 
+    `BNF Chapter Name` = case_when(
+      is.na(`BNF Chapter Name`) ~ "Undefined",
+      TRUE ~ `BNF Chapter Name` 
     ),
     BNF_SECTION = case_when(
       BNF_SECTION == "-None-character(0)" ~ "Undefined",
@@ -564,14 +565,14 @@ table_7_raw <- table_7_scmd |>
     )
   )
 
-table_7_non_na <- table_7_raw |>
+table_8_non_na <- table_8_raw |>
   filter(
-    !is.na(`BNF Section Description`)
+    !is.na(`BNF Section Name`)
   ) |>
   left_join(
     bnf_chapter_lookup, 
     by = c(
-      "BNF_CHAPTER" = "BNF Chapter"
+      "BNF_CHAPTER" = "BNF Chapter Code"
     )
   ) |>
   select(
@@ -579,10 +580,10 @@ table_7_non_na <- table_7_raw |>
   ) |>
   rename(
     "Financial Year" = 1,
-    "BNF Chapter" = 2,
-    "BNF Chapter Description" = 3,
-    "BNF Section" = 4,
-    "BNF Section Description" = 5,
+    "BNF Chapter Code" = 2,
+    "BNF Chapter Name" = 3,
+    "BNF Section Code" = 4,
+    "BNF Section Name" = 5,
     "ICB Code" = 6,
     "ICB" = 7,
     "Hospital prescribing issued within hospitals (GBP)" = 8,
@@ -591,16 +592,16 @@ table_7_non_na <- table_7_raw |>
     "Primary care prescribing dispensed in the community (GBP)" = 11
   )
 
-icb_code_lookup <- table_6_dwh |>
+icb_code_lookup <- table_7_dwh |>
   select(
     `ICB Code`,
     ICB
   ) |>
   distinct()
  
-table_7_na <- table_7_raw |>
+table_8_na <- table_8_raw |>
   filter(
-    is.na(`BNF Section Description`)
+    is.na(`BNF Section Name`)
   ) |>
   left_join(
     scmd_section_lookup,
@@ -625,10 +626,10 @@ table_7_na <- table_7_raw |>
   )|>
   rename(
     "Financial Year" = 1,
-    "BNF Chapter" = 2,
-    "BNF Chapter Description" = 3,
-    "BNF Section" = 4,
-    "BNF Section Description" = 5,
+    "BNF Chapter Code" = 2,
+    "BNF Chapter Name" = 3,
+    "BNF Section Code" = 4,
+    "BNF Section Name" = 5,
     "ICB Code" = 6,
     "ICB" = 7,
     "Hospital prescribing issued within hospitals (GBP)" = 8,
@@ -637,20 +638,20 @@ table_7_na <- table_7_raw |>
     "Primary care prescribing dispensed in the community (GBP)" = 11
   )
 
-table_7 <- table_7_non_na |>
+table_8 <- table_8_non_na |>
   bind_rows(
-    table_7_na
+    table_8_na
   ) |>
   arrange(
     `Financial Year`,
-    `BNF Chapter`,
-    `BNF Section`,
+    `BNF Chapter Code`,
+    `BNF Section Code`,
     `ICB Code`
   ) %>%
   arrange(
     `Financial Year`,
-    `BNF Chapter`,
-    `BNF Section`,
+    `BNF Chapter Code`,
+    `BNF Section Code`,
     `ICB Code` == "-"
   )|>
   rowwise() |>
@@ -664,38 +665,22 @@ table_7 <- table_7_non_na |>
   ) %>%
   mutate(
     #fix bnf section desc differences from scmd to dwh
-    `BNF Section Description` = case_when(
-      `BNF Section` == "1803" ~ "X-Ray contrast media",
-      `BNF Section` == "1901" ~ "Alcohol, wines and spirits",
-      `BNF Section` == "1904" ~ "Single substances",
-      `BNF Section` == "1905" ~ "Other preparations",
-      `BNF Section` == "1908" ~ "Colouring, flavouring and sweetening agents",
-      `BNF Section` == "1909" ~ "Disinfectants, preservatives and sterilising agents",
-      `BNF Section` == "1915" ~ "Other gases",
-      `BNF Section` == "2001" ~ "Absorbent Cottons",
-      `BNF Section` == "2134" ~ "Vaginal PH Correction Products",
-      `BNF Section` == "2144" ~ "Debrisoft pad 13cm x 20cm",
-      TRUE ~ `BNF Section Description`
+    `BNF Section Name` = case_when(
+      `BNF Section Code` == "1803" ~ "X-Ray contrast media",
+      `BNF Section Code` == "1901" ~ "Alcohol, wines and spirits",
+      `BNF Section Code` == "1904" ~ "Single substances",
+      `BNF Section Code` == "1905" ~ "Other preparations",
+      `BNF Section Code` == "1908" ~ "Colouring, flavouring and sweetening agents",
+      `BNF Section Code` == "1909" ~ "Disinfectants, preservatives and sterilising agents",
+      `BNF Section Code` == "1915" ~ "Other gases",
+      `BNF Section Code` == "2001" ~ "Absorbent Cottons",
+      `BNF Section Code` == "2134" ~ "Vaginal PH Correction Products",
+      `BNF Section Code` == "2144" ~ "Debrisoft pad 13cm x 20cm",
+      TRUE ~ `BNF Section Name`
     )
   )
 
-table_7[is.na(table_7)] = 0
-
-section <- table_7 %>%
-  group_by(
-    `Financial Year`,
-    `BNF Chapter`,
-    `BNF Chapter Description`,
-    `BNF Section`,
-    `BNF Section Description`
-  ) %>%
-  summarise(
-    `Hospital prescribing issued within hospitals (GBP)` = sum(`Hospital prescribing issued within hospitals (GBP)`),
-    `Dental prescribing dispensed in the community (GBP)` = sum(`Dental prescribing dispensed in the community (GBP)`),
-    `Hospital prescribing dispensed in the community (GBP)` = sum(`Hospital prescribing dispensed in the community (GBP)`),
-    `Primary care prescribing dispensed in the community (GBP)` = sum(`Primary care prescribing dispensed in the community (GBP)`)
-  )
-
+table_8[is.na(table_8)] = 0
 
 # 6. write data to .xlsx --------------------------------------------------
 
@@ -703,57 +688,327 @@ section <- table_7 %>%
 # create wb object
 # create list of sheetnames needed (overview and metadata created automatically)
 sheetNames <- c(
-
+  "Table_1",
+  "Table_2",
+  "Table_3",
+  "Table_4",
+  "Table_5",
+  "Table_6",
+  "Table_7",
+  "Table_8"
 )
 
 wb <- create_wb(sheetNames)
 
 #create metadata tab (will need to open file and auto row heights once ran)
 meta_fields <- c(
-
+   "BNF Chapter Code",
+   "BNF Chapter Name",
+   "BNF Section Code",
+   "BNF Section Name",
+   "Cost",
+   "Dental prescribing dispensed in the community (GBP)",
+   "Financial Year",
+   "Hospital prescribing dispensed in the community (GBP)",
+   "Hospital prescribing issued within hospitals (GBP)",
+   "Population",
+   "Primary care prescribing dispensed in the community (GBP)",
+   "ICB",
+   "ICB Code",
+   "Undefined data"
 )
 
 meta_descs <-
   c(
-    
+    "The unique code used to refer to the British National Formulary (BNF) chapter.",
+    "The name given to a British National Formulary (BNF) chapter. This is the broadest grouping of the BNF therapeutical classification system.",
+    "The unique code used to refer to the British National Formulary (BNF) section.",
+    "The name given to a British National Formulary (BNF) section. This is the next broadest grouping of the BNF therapeutical classification system after chapter.",
+    "There are many costs incurred when a dispensing contractor fulfils a prescription. In table 1 <<<ACTUAL COST DEFINITION HERE>>>. In tables 2 to 8 the costs reported in this publication represent the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors. In secondary care they are the actual costs paid (including applicable VAT) for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England.",
+    "Total costs for prescriptions issued by dental practitioners that have been dispensed in the community in England, Scotland, Wales, and the Channel Islands.",
+    "The financial year to which the data belongs.",
+    "Total costs for prescriptions issued by Hospitals in England that have been dispensed in the community in England, Scotland, Wales, and the Channel Islands.",
+    "Actual costs (including applicable VAT) for medicines issued in hospitals in England that have been dispensed via the hospital pharmacy, homecare companies and outsourced out-patient pharmacy partnerships.",
+    "The population figures by ICB come from the latest ONS population by ICB dataset at https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2fclinicalcommissioninggroupmidyearpopulationestimates%2fmid2020sape23dt6a/sape23dt6amid2020ccg2021estimatesunformatted.xlsx",
+    "Total costs for prescriptions issued by GP practices and community prescribers in England that have been dispensed in the community in England, Scotland, Wales, and the Channel Islands.",
+    "The unique code used to refer to an ICB.",
+    "The name give to the Integrated Care Board (ICB) that a prescribing organisation belongs to. This is based upon NHSBSA administrative records, not geographical boundaries and more closely reflect the operational organisation of practices than other geographical data sources.",
+    "'Undefined' is used to indicate data that costs can not be allocated to either and BNF Chapter, BNF Section or an ICB."
   )
 
 create_metadata(wb,
                 meta_fields,
                 meta_descs)
 
-#### Patient identification
+#### table 1
 # write data to sheet
 write_sheet(
   wb,
-  "Patient_Identification",
+  "Table_1",
   paste0(
-    "Hormone replacement therapy - England - 2015/2016 to ",
-    ltst_year_ytd,
-    " - Proportion of items for which an NHS number was recorded (%)"
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 1: Total costs in each setting by financial year"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
-    "2. The figures in this table relate to prescribing of HRT medications in England that are subsequently dispensed in the community in England, Scotland, Wales, Isle of Man or the Channel Islands by a pharmacy, appliance contractor, dispensing doctor, or have been personally administered by a GP practice. They do not include data on medicines used in secondary care, prisons, or issued by a private prescriber.",
-    "3. The below proportions reflect the percentage of prescription items where a NHS number was recorded."
-  ),
-  pi_data_annual,
-  30
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are actual costs. <<ACTUAL COST DEFINITION HERE>>"
+    ),
+  table_1,
+  18
 )
 
 #left align columns A
 format_data(wb,
-            "Patient_Identification",
+            "Table_1",
             c("A"),
             "left",
             "")
 
 #right align columns and round to 2 DP
 format_data(wb,
-            "Patient_Identification",
-            c("B"),
+            "Table_1",
+            c("B", "C", "D", "E", "F"),
+            "right",
+            "#,##0.00")
+
+#### table 2
+# write data to sheet
+write_sheet(
+  wb,
+  "Table_2",
+  paste0(
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 2: Total costs in each setting by financial year"
+  ),
+  c(
+    "1. Field definitions can be found on the 'Metadata' tab.",
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+  ),
+  table_2,
+  18
+)
+
+#left align columns A
+format_data(wb,
+            "Table_2",
+            c("A"),
+            "left",
+            "")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_2",
+            c("B", "C", "D", "E", "F"),
+            "right",
+            "#,##0.00")
+
+#### table 3
+# write data to sheet
+write_sheet(
+  wb,
+  "Table_3",
+  paste0(
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 3: Percentage change in costs in each setting by financial year"
+  ),
+  c(
+    "1. Field definitions can be found on the 'Metadata' tab.",
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+  ),
+  table_3,
+  18
+)
+
+#left align columns A
+format_data(wb,
+            "Table_3",
+            c("A"),
+            "left",
+            "")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_3",
+            c("B", "C", "D", "E"),
             "right",
             "0.00")
+
+#### table 4
+# write data to sheet
+write_sheet(
+  wb,
+  "Table_4",
+  paste0(
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 4: Total costs in each setting by month, April 2017 to March 2022"
+  ),
+  c(
+    "1. Field definitions can be found on the 'Metadata' tab.",
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+  ),
+  table_4,
+  18
+)
+
+#left align columns A
+format_data(wb,
+            "Table_4",
+            c("A"),
+            "left",
+            "")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_4",
+            c("B", "C", "D", "E", "F"),
+            "right",
+            "#,##0.00")
+
+#### table 5
+# write data to sheet
+write_sheet(
+  wb,
+  "Table_5",
+  paste0(
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 5: Total costs in each setting by BNF Chapter and financial year"
+  ),
+  c(
+    "1. Field definitions can be found on the 'Metadata' tab.",
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+  ),
+  table_5,
+  18
+)
+
+#left align columns A
+format_data(wb,
+            "Table_5",
+            c("A", "B", "C"),
+            "left",
+            "")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_5",
+            c("D", "E", "F", "G", "H"),
+            "right",
+            "#,##0.00")
+
+#### table 6
+# write data to sheet
+write_sheet(
+  wb,
+  "Table_6",
+  paste0(
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 6: Total costs in each setting by BNF Section and financial year"
+  ),
+  c(
+    "1. Field definitions can be found on the 'Metadata' tab.",
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+  ),
+  table_6,
+  18
+)
+
+#left align columns A
+format_data(wb,
+            "Table_6",
+            c("A", "B", "C", "D", "E"),
+            "left",
+            "")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_6",
+            c("F", "G", "H", "I", "J"),
+            "right",
+            "#,##0.00")
+
+#### table 7
+# write data to sheet
+write_sheet(
+  wb,
+  "Table_7",
+  paste0(
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 7: Total costs in each setting by Integrated Care Board (ICB) and financial year"
+  ),
+  c(
+    "1. Field definitions can be found on the 'Metadata' tab.",
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+  ),
+  table_7,
+  18
+)
+
+#left align columns A
+format_data(wb,
+            "Table_7",
+            c("A", "B", "C"),
+            "left",
+            "")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_7",
+            c("D", "E", "F", "G", "H", "J"),
+            "right",
+            "#,##0.00")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_7",
+            c("I"),
+            "right",
+            "#,##0")
+
+#### table 8
+# write data to sheet
+write_sheet(
+  wb,
+  "Table_8",
+  paste0(
+    "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
+    "Table 8: Total costs in each setting by BNF Section, ICB and financial year"
+  ),
+  c(
+    "1. Field definitions can be found on the 'Metadata' tab.",
+    "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
+    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+  ),
+  table_8,
+  18
+)
+
+#left align columns A
+format_data(wb,
+            "Table_8",
+            c("A", "B", "C", "D", "E", "F", "G"),
+            "left",
+            "")
+
+#right align columns and round to 2 DP
+format_data(wb,
+            "Table_8",
+            c("H", "I", "J", "K", "L"),
+            "right",
+            "#,##0.00")
+
+
+
+#save file into outputs folder
+openxlsx::saveWorkbook(wb,
+                       "outputs/pchc-2022-summary-tables-v001.xlsx",
+                       overwrite = TRUE)
 
 # 7. automate narratives --------------------------------------------------
 
