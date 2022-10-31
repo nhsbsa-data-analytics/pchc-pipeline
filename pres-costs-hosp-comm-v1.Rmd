@@ -69,17 +69,16 @@ options(highcharter.lang = hcoptslang)
 # set code chunk options to disable echo by default
 knitr::opts_chunk$set(echo = FALSE)
 
-
-
-
 ```
 <main>
 
-# England April 2016 to March 2021 {.toc-ignore}
+# England April 2017 to March 2022 {.toc-ignore}
 
-Published 11 November 2021
+Published 10 November 2022
 
 ## Key findings
+
+WILL UPDATE ONCE ALL DONE (NEED CENTRAL REBATE FIGURES!)
 
 The total expenditure on medicines in England by the NHS in 2020/21 was estimated to be £16.7 billion. The total expenditure without central rebates was £17.1 billion, an increase of 4.56% from the £16.4 billion in 2019/20. This is split down to £9.42 billion issued in primary care and dispensed in the community, £7.59 billion issued in hospitals, £87.9 million prescribed in hospitals and dispensed in the community, and £24.3 million prescribed by dentists and dispensed in the community. 
 
@@ -89,9 +88,7 @@ The total expenditure on medicines in England by the NHS in 2020/21 was estimate
 
 * The average costs per capita for drugs, dressing, appliances, and medical devices prescribed in England in 2020/21 across all settings was £303.
 
-This is the first release in a new series by the NHSBSA following the migration of this publication from NHS Digital. This release uses data that reflects the actual costs (including applicable VAT) paid by hospitals for medicines including any discounts. Previous versions of this publication used the cost of medicines at list price which did not provide an accurate estimate of the actual costs to hospitals for the provision of medicines to patients.
-
-It is not possible to include the central rebates in the figures broken down by Sustainability and Transformation Partnership (STP) or British National Formulary (BNF) category owing to commercial confidentiality. The central rebate figure includes rebates from arrangements NHS England and NHS Improvement (NHSEI) agreed with pharmaceutical companies following successful negotiations to commission a variety of treatments both in the cancer drugs fund (CDF) and in routine commissioning. This includes treatments for both rare diseases and more common conditions.
+It is not possible to include the central rebates in the figures broken down by Integrated Care Board (ICB) or British National Formulary (BNF) category owing to commercial confidentiality. The central rebate figure includes rebates from arrangements NHS England and NHS Improvement (NHSEI) agreed with pharmaceutical companies following successful negotiations to commission a variety of treatments both in the cancer drugs fund (CDF) and in routine commissioning. This includes treatments for both rare diseases and more common conditions.
 
 ---
 
@@ -115,9 +112,7 @@ But excludes:
 
 * Any medicines issued in hospital in England but not managed via the hospital pharmacy service.
 
-Previous Prescribing Costs in Hospitals and the Community (PCHC) releases were delivered by [NHS Digital](https://digital.nhs.uk/data-and-information/publications/statistical/prescribing-costs-in-hospitals-and-the-community), this is the first in a new series by the NHSBSA. For the secondary care medicines data these covered the overall cost at list price before any discounts of medicines used in hospitals. This data was provided by IQVIA, who collect data on items issued from pharmacies in most hospitals in England and apply costs to this data using the Drug Tariff and standard price lists. Therefore, all costs given in these reports were medicine costs at list price, also known as Net Ingredient Cost (NIC) in Primary Care – this is the basic price of a drug excluding VAT and is not necessarily the price the NHS paid. Most NHS hospital pharmacies do not supply dressings or devices. The secondary care spend in this report  is not indicative of total NHS spend on these products. Supply is usually made via the NHS Supply chain.
-
-Starting with the 2020/21 release, the publication by the NHSBSA will be produced using data that reflects the actual costs paid by hospitals, including any discounts. This data is collated by Rx-Info and is accessed via their Define system. Data from this source is only available from April 2016 onwards. Primary care data will continue to be extracted from the NHSBSA Enterprise Data Warehouse (EDW).
+This publication is produced using data that reflects the actual costs paid by hospitals, including any discounts. This data is collated by Rx-Info and is accessed via their Define system. Data from this source is only available from April 2017 onwards. Primary care data is extracted from the NHSBSA Enterprise Data Warehouse (EDW).
 
 This publication aims to explore the costs of medicines prescribed within both primary and secondary care in England. These statistics detail:
 
@@ -131,13 +126,17 @@ This publication aims to explore the costs of medicines prescribed within both p
 
 ### 1.2 Definitions
 
-Throughout this publication when 'costs' are referred to within hospitals they are the actual costs paid (including applicable VAT) for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England, following any discount. 'Costs' where items have been dispensed in the community are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). The basic price is given either in the Drug Tariff or is determined from prices published by manufacturers, wholesalers, or suppliers. Basic price is set out in Parts VIII and IX of the Drug Tariff. For any drugs not in Part VIII, the price is usually taken from the manufacturer, wholesaler or supplier of the product. 'Costs' also includes retained margin, where applicable. This retained medicine margin contributes to the provision of pharmaceutical services alongside the other agreed fees and allowances.
+Throughout this publication when 'costs' are referred to within hospitals they are the actual costs paid (including applicable VAT) for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England, following any discount. 
+
+<<ACTUAL COSTS DEF|INITION HERE>>
+
+Net Ingredient Cost (NIC) in primary care is the basic price is given either in the Drug Tariff or is determined from prices published by manufacturers, wholesalers, or suppliers. Basic price is set out in Parts VIII and IX of the Drug Tariff. For any drugs not in Part VIII, the price is usually taken from the manufacturer, wholesaler or supplier of the product. 'Costs' also includes retained margin, where applicable. This retained medicine margin contributes to the provision of pharmaceutical services alongside the other agreed fees and allowances.
 
 These statistics use the therapeutic classifications defined in the BNF to group medicines together based on their primary therapeutic indication. The NHSBSA uses and maintains the classification system of the BNF implemented prior to the release of edition 70, including the six pseudo BNF chapters (18 to 23) created by NHS Prescription Services used to classify products that fall outside of chapters 1 to 15.
 
-The NHS England Regions and STPs shown in the statistical summary tables of this release are based on the NHS organisational structure on 31 March 2021. Organisational changes implemented on 1 April 2020 have resulted in 4 NHS England Regions becoming 7, and the abolishment of Local Offices which have been replaced with STPs.
+The ICBs shown in the statistical summary tables of this release are based on the NHS organisational structure on 31 March 2022. 
 
-STPs are health geographies that are formed by NHS organisations, local councils, and others to set out proposals to improve health and care for the local population. In these statistics the STP given is that of the dispensing contractor and not the prescribing organisation. These geographies
+ICBs are health geographies that are formed by NHS organisations, local councils, and others to set out proposals to improve health and care for the local population. In these statistics the STP given is that of the dispensing contractor and not the prescribing organisation. These geographies
 are taken from NHSBSA administrative records and relate to the commissioning of services for NHS patients, and not the physical location of a dispensing contractor, or the patient that has received the drug, appliance, or medical device.
 
 Prescribing volumes are not included in this publication. Unlike in the primary care dataset, where item level data is available, in secondary care, data is collated as quantities issued. The concept of a prescription item does not exist for secondary care medicines data.
