@@ -1022,3 +1022,13 @@ rmarkdown::render("pres-costs-hosp-comm-v1.Rmd",
                   output_format = "word_document",
                   output_file = "outputs/pchc-2021-2022-narrative-v001.docx")
 
+rmarkdown::render("pchc-background.Rmd",
+                  output_format = "html_document",
+                  output_file = "outputspchc_2022_background_information_methodology_v001.html")
+
+
+rmarkdown::render("pchc-background.Rmd",
+                  output_format = "word_document",
+                  output_file = "outputs/pchc_2022_background_information_methodology_v001.docx")
+
+

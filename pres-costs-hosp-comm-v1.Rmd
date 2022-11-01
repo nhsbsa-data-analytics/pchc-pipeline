@@ -49,23 +49,6 @@ color: #005EB8;
 </style>
 <html lang="en">
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
-# library chart package
-library(highcharter)
-library(DT)
-library(scales)
-library(lubridate)
-library(tidyverse)
-library(data.table)
-library(kableExtra)
-library(ggthemes)
-library(knitr)
-
-# set highcharts options for thousand separator
-hcoptslang <- getOption("highcharter.lang")
-hcoptslang$thousandsSep <- ","
-hcoptslang$numericSymbols <- c("k", "M", "B", "T")
-options(highcharter.lang = hcoptslang)
-
 # set code chunk options to disable echo by default
 knitr::opts_chunk$set(echo = FALSE)
 
@@ -149,7 +132,7 @@ The charts in this report are interactive and allow you to isolate the topics th
 ### 2.1 Costs by setting
 
 #### Figure 1: Total costs by setting between 2017/2018 and 2021/2022 using actual costs in primary care
-```{r fy_actual_costs}
+```{r fy_actual_costs, out.width = "100%"}
 
 chart_data <- table_1 |>
   pivot_longer(
@@ -247,7 +230,7 @@ The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billio
 The central rebate accounted for £495 million in financial year 2021/22. This would reduce the overall expenditure in hospitals for 2021/22 to £8.27 billion. This figure has not been accounted for in the charts and summary tables as it is not available at a more granular level than overall amount.
 
 #### Figure 2: Total costs by setting between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) in primary care
-```{r fy_nic}
+```{r fy_nic, out.width = "100%"}
 chart_data <- table_2 |>
   pivot_longer(
     cols = contains("GBP"),
@@ -341,7 +324,7 @@ The NIC of items prescribed in primary care in England in 2021/22 was £9.49 bil
 
 
 #### Figure 3: Percentage change in costs from previous financial year by setting between between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) in primary care
-```{r fy_changes}
+```{r fy_changes, out.width = "100%"}
 
 chart_data <- table_3 |>
   pivot_longer(
@@ -440,7 +423,7 @@ The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billio
 In 2021/22 the total costs paid for drugs, dressing, appliances, and medical devices was £18.4 billion. This was an increase of 7.86% from the £17.0 billion paid in 2020/21 and an increase of 15.9% from the £15.7 billion paid in 2017/18.
 
 #### Figure 4: Total costs by setting between April 2017 and March 2022 using Net Ingredient Costs (NIC) in primary care
-```{r monthly_summary}
+```{r monthly_summary, out.width = "100%"}
 
 chart_data <- table_4 |>
   pivot_longer(
@@ -543,7 +526,7 @@ In March 2022, the total actual costs paid for drugs, dressing, appliances, and 
 ### 2.2 Costs by BNF Chapter
 
 #### Figure 5: Total costs by BNF Chapter in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
-```{r bnf_summary}
+```{r bnf_summary, out.width = "100%"}
 
 
 chart_data <- table_5 |>
@@ -651,7 +634,7 @@ Within primary care in the community in 2021/22 chapter 2 - Cardiovascular Syste
 Within hospitals in 2021/22 there was a spend of £382 million which is not accounted for under any of the BNF Chapters. These are drugs manufactured as specials, dressing, appliances, and medical devices which are not authored on the Dictionary of Medicines and Devices (dm+d).
 
 #### Figure 6: Top 10 BNF Sections by spend across all settings in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
-```{r bnf_section_summary}
+```{r bnf_section_summary, out.width = "100%"}
 
 chart_data_top_n <- table_6 |>
   pivot_longer(
@@ -791,7 +774,7 @@ Within primary care in the community in 2021/22 section 0601 - Drugs Used in Dia
 ### 2.3 Costs by ICB
 
 #### Figure 7: Total costs by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
-```{r stp_summary}
+```{r stp_summary, out.width = "100%"}
 
 chart_data_order <- table_7 |>
   pivot_longer(
@@ -906,7 +889,7 @@ Data around dental in the community has not been included in figure 5 as dental 
 ICB costs in secondary care are based on the ICB in which the hospital is located. Not all spend is specifically for that ICB (e.g. patients may be referred to a hospital outside of their ICB).
 
 #### Figure 8: Average costs per capita by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
-```{r stp_per_capita}
+```{r stp_per_capita, out.width = "100%"}
 
 chart_data <- table_7 |>
   pivot_longer(
