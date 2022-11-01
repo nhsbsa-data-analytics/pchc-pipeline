@@ -1024,7 +1024,7 @@ rmarkdown::render("pres-costs-hosp-comm-v1.Rmd",
 
 rmarkdown::render("pchc-background.Rmd",
                   output_format = "html_document",
-                  output_file = "outputspchc_2022_background_information_methodology_v001.html")
+                  output_file = "outputs/pchc_2022_background_information_methodology_v001.html")
 
 
 rmarkdown::render("pchc-background.Rmd",
