@@ -712,8 +712,8 @@ meta_fields <- c(
    "Hospital prescribing issued within hospitals (GBP)",
    "Population",
    "Primary care prescribing dispensed in the community (GBP)",
-   "ICB",
    "ICB Code",
+   "ICB",
    "Undefined data"
 )
 
@@ -746,7 +746,7 @@ write_sheet(
   "Table_1",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 1: Total costs in each setting by financial year"
+    "Table 1: Total costs in each setting by financial year using actual costs in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
@@ -778,7 +778,7 @@ write_sheet(
   "Table_2",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 2: Total costs in each setting by financial year"
+    "Table 2: Total costs in each setting by financial year using Net Ingredient Costs (NIC) in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
@@ -810,7 +810,7 @@ write_sheet(
   "Table_3",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 3: Percentage change in costs in each setting by financial year"
+    "Table 3: Percentage change in costs in each setting by financial year using Net Ingredient Costs (NIC) in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
@@ -842,7 +842,7 @@ write_sheet(
   "Table_4",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 4: Total costs in each setting by month, April 2017 to March 2022"
+    "Table 4: Total costs in each setting by month, April 2017 to March 2022 using Net Ingredient Costs (NIC) in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
@@ -874,7 +874,7 @@ write_sheet(
   "Table_5",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 5: Total costs in each setting by BNF Chapter and financial year"
+    "Table 5: Total costs in each setting by BNF Chapter and financial year using Net Ingredient Costs (NIC) in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
@@ -906,7 +906,7 @@ write_sheet(
   "Table_6",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 6: Total costs in each setting by BNF Section and financial year"
+    "Table 6: Total costs in each setting by BNF Section and financial year using Net Ingredient Costs (NIC) in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
@@ -938,7 +938,7 @@ write_sheet(
   "Table_7",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 7: Total costs in each setting by Integrated Care Board (ICB) and financial year"
+    "Table 7: Total costs in each setting by Integrated Care Board (ICB) and financial year using Net Ingredient Costs (NIC) in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
@@ -977,7 +977,7 @@ write_sheet(
   "Table_8",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 8: Total costs in each setting by BNF Section, ICB and financial year"
+    "Table 8: Total costs in each setting by BNF Section, ICB and financial year using Net Ingredient Costs (NIC) in primary care"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",

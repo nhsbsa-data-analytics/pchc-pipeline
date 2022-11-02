@@ -418,7 +418,7 @@ The cost of items within primary care in the community in England in 2021/22 was
 
 The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billion. This was a 16.8% increase of £1.26 billion from £7.51 billion in 2020/21 and a 32.2% increase of £2.13 billion from £6.63 billion in 2017/18.
 
-In 2021/22 the total costs paid for drugs, dressing, appliances, and medical devices was £18.4 billion. This was an increase of 7.86% from the £17.0 billion paid in 2020/21 and an increase of 15.9% from the £15.7 billion paid in 2017/18.
+In 2021/22 the total costs paid for drugs, dressing, appliances, and medical devices was £18.4 billion. This was an increase of 7.86% from the £17.0 billion paid in 2020/21 and an increase of 17.3% from the £15.7 billion paid in 2017/18.
 
 #### Figure 4: Total costs by setting between April 2017 and March 2022 using Net Ingredient Costs (NIC) in primary care
 ```{r monthly_summary, out.width = "100%"}
