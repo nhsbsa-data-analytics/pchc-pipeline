@@ -723,7 +723,7 @@ meta_descs <-
     "The name given to a British National Formulary (BNF) chapter. This is the broadest grouping of the BNF therapeutical classification system.",
     "The unique code used to refer to the British National Formulary (BNF) section.",
     "The name given to a British National Formulary (BNF) section. This is the next broadest grouping of the BNF therapeutical classification system after chapter.",
-    "There are many costs incurred when a dispensing contractor fulfils a prescription. In table 1 <<<ACTUAL COST DEFINITION HERE>>>. In tables 2 to 8 the costs reported in this publication represent the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors. In secondary care they are the actual costs paid (including applicable VAT) for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England.",
+    "There are many costs incurred when a dispensing contractor fulfils a prescription. In table 1 the costs in primary care represent the actual costs. Actual cost is the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors. In tables 2 to 8 the costs in primary care represent the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors. In secondary care they are the actual costs paid (including applicable VAT) for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England.",
     "Total costs for prescriptions issued by dental practitioners that have been dispensed in the community in England, Scotland, Wales, and the Channel Islands.",
     "The financial year to which the data belongs.",
     "Total costs for prescriptions issued by Hospitals in England that have been dispensed in the community in England, Scotland, Wales, and the Channel Islands.",
@@ -751,7 +751,7 @@ write_sheet(
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are actual costs. <<ACTUAL COST DEFINITION HERE>>"
+    "3. Primary care costs in this table are actual costs, the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors."
     ),
   table_1,
   18
