@@ -111,7 +111,13 @@ This publication aims to explore the costs of medicines prescribed within both p
 
 Throughout this publication when 'costs' are referred to within hospitals they are the actual costs paid (including applicable VAT) for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England, following any discount. 
 
-<<ACTUAL COSTS DEFINITION HERE>>
+Actual cost is the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors. It is calculated as the basic price of a product (Net Ingredient Cost) less the national average discount percentage (NADP) plus payments for consumables, out of pocket expenses (OOPE), and payments for containers:
+
+Actual cost = net ingredient cost * (1 – NADP) + payments for consumables + OOPE + payment for containers
+
+The NADP is calculated using the discount rates applied to individual dispensing contractors according to the Drug Tariff for England and Wales for Pharmacy and Appliance contractors and the General Medical Services Statement of Financial Entitlement Annex G Part 1 for Dispensing Doctors and Personal Administration accounts.
+
+Actual cost is not reflective of the payment made to a dispensing contractor for the cost of the individual drugs dispensed and excludes other fees paid that a prescription item may attract.
 
 Net Ingredient Cost (NIC) in primary care is the basic price given either in the Drug Tariff or is determined from prices published by manufacturers, wholesalers, or suppliers. Basic price is set out in Parts VIII and IX of the Drug Tariff. For any drugs not in Part VIII, the price is usually taken from the manufacturer, wholesaler or supplier of the product. 'Costs' also includes retained margin, where applicable. This retained medicine margin contributes to the provision of pharmaceutical services alongside the other agreed fees and allowances.
 
