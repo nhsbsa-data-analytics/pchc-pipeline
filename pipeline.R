@@ -28,6 +28,10 @@ req_pkgs <-
 
 invisible(lapply(c(req_pkgs,  "nhsbsaR", "pchcR"), library, character.only = TRUE))
 
+devtools::install_github(auth_token = Sys.getenv("GITHUB_PAT"), repo = "nhsbsa-data-analytics/pchcR")
+
+library(pchcR)
+
 # 2. set options ----------------------------------------------------------
 pchc_options()
 
@@ -35,13 +39,13 @@ pchc_options()
 con <- con_nhsbsa(
   dsn = "FBS_8192k",
   driver = "Oracle in OraClient19Home1",
-  "DWCP",
-  username = rstudioapi::showPrompt(title = "Username", message = "Username"),
-  password = rstudioapi::askForPassword()
+  "DWCP"
+  # username = rstudioapi::showPrompt(title = "Username", message = "Username"),
+  # password = rstudioapi::askForPassword()
 )
 
 #only run if need to build new fact table
-#pchcR::create_fact(con, to = max_month)
+# pchcR::create_fact(con, to = 202203L)
 
 # 4. extract data tables from fact table -----------------------------------------
 
