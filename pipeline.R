@@ -41,7 +41,7 @@ con <- con_nhsbsa(
 )
 
 #only run if need to build new fact table
-#pchcR::create_fact(con, to = max_month)
+# pchcR::create_fact(con, to = 202203L)
 
 # 4. extract data tables from fact table -----------------------------------------
 
@@ -54,7 +54,6 @@ table_5_dwh <- table_5_dwh(con)
 table_6_dwh <- table_6_dwh(con)
 table_7_dwh <- table_7_dwh(con)
 table_8_dwh <- table_8_dwh(con)
-
 
 # disconnect from DWH
 DBI::dbDisconnect(con)
@@ -746,12 +745,12 @@ write_sheet(
   "Table_1",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 1: Total costs in each setting by financial year using actual costs in primary care"
+    "Table 1: Total costs in each setting by financial year using actual costs for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are actual costs, the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are actual costs, the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors."
     ),
   table_1,
   18
@@ -778,12 +777,12 @@ write_sheet(
   "Table_2",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 2: Total costs in each setting by financial year using Net Ingredient Costs (NIC) in primary care"
+    "Table 2: Total costs in each setting by financial year using Net Ingredient Costs (NIC) for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
   ),
   table_2,
   18
@@ -810,12 +809,12 @@ write_sheet(
   "Table_3",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 3: Percentage change in costs in each setting by financial year using Net Ingredient Costs (NIC) in primary care"
+    "Table 3: Percentage change in costs in each setting by financial year using Net Ingredient Costs (NIC) for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
   ),
   table_3,
   18
@@ -842,12 +841,12 @@ write_sheet(
   "Table_4",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 4: Total costs in each setting by month, April 2017 to March 2022 using Net Ingredient Costs (NIC) in primary care"
+    "Table 4: Total costs in each setting by month, April 2017 to March 2022 using Net Ingredient Costs (NIC) for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
   ),
   table_4,
   18
@@ -874,12 +873,12 @@ write_sheet(
   "Table_5",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 5: Total costs in each setting by BNF Chapter and financial year using Net Ingredient Costs (NIC) in primary care"
+    "Table 5: Total costs in each setting by BNF Chapter and financial year using Net Ingredient Costs (NIC) for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
   ),
   table_5,
   18
@@ -906,12 +905,12 @@ write_sheet(
   "Table_6",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 6: Total costs in each setting by BNF Section and financial year using Net Ingredient Costs (NIC) in primary care"
+    "Table 6: Total costs in each setting by BNF Section and financial year using Net Ingredient Costs (NIC) for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
   ),
   table_6,
   18
@@ -938,12 +937,12 @@ write_sheet(
   "Table_7",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 7: Total costs in each setting by Integrated Care Board (ICB) and financial year using Net Ingredient Costs (NIC) in primary care"
+    "Table 7: Total costs in each setting by Integrated Care Board (ICB) and financial year using Net Ingredient Costs (NIC)for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
   ),
   table_7,
   18
@@ -977,12 +976,12 @@ write_sheet(
   "Table_8",
   paste0(
     "Prescribing Costs in Hospitals and the Community - England 2017/18 - 2021/22 - ",
-    "Table 8: Total costs in each setting by BNF Section, ICB and financial year using Net Ingredient Costs (NIC) in primary care"
+    "Table 8: Total costs in each setting by BNF Section, ICB and financial year using Net Ingredient Costs (NIC) for items dispensed in the community"
   ),
   c(
     "1. Field definitions can be found on the 'Metadata' tab.",
     "2. Data is sourced from NHSBSA Data & Insight Data Warehouse and RX-Info Define",
-    "3. Primary care costs in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
+    "3. The costs of items dispensed in the community in this table are the basic price of the item. This is sometimes called the ‘Net Ingredient Cost’ (NIC). This also known as reimbursement of costs to dispensing contractors."
   ),
   table_8,
   18
