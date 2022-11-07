@@ -146,7 +146,7 @@ The charts in this report are interactive and allow you to isolate the topics th
 
 ### 2.1 Costs by setting
 
-#### Figure 1: Total costs by setting between 2017/2018 and 2021/2022 using actual costs in primary care
+#### Figure 1: Total costs to NHS commissioners by setting between 2017/2018 and 2021/2022 using actual costs for items dispensed in the community
 ```{r fy_actual_costs, out.width = "100%"}
 
 chart_data <- table_1 |>
@@ -240,11 +240,11 @@ Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Tab
 
 The actual cost of items prescribed in primary care in England in 2021/22 was £8.90 billion, 50.0% of total expenditure. In 2017/18 the actual cost of items prescribed in primary care in England was £8.26 billion, 54.9% of total expenditure. 
 
-The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billion, 49.3% of total expenditure. In 2017/18 the cost of items dispensed in hospitals in England was £6.63 billion, 44.1% of total expenditure. 
+The cost of medicines issued in hospitals in England in 2021/22 was £8.77 billion, 49.3% of total expenditure. In 2017/18 the cost of medicines issued in hospitals in England was £6.63 billion, 44.1% of total expenditure. 
 
 The central rebate accounted for £495 million in financial year 2021/22. This would reduce the overall expenditure in hospitals for 2021/22 to £8.27 billion. This figure has not been accounted for in the charts and summary tables as it is not available at a more granular level than overall amount.
 
-#### Figure 2: Total costs by setting between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) in primary care
+#### Figure 2: Total costs by setting between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r fy_nic, out.width = "100%"}
 chart_data <- table_2 |>
   pivot_longer(
@@ -335,10 +335,11 @@ figure_2
 
 Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Two](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2022-summary-tables-v001.xlsx)
 
-The NIC of items prescribed in primary care in England in 2021/22 was £9.49 billion, 51.6% of total expenditure. In 2017/18 the actual cost of items prescribed in primary care in England was £8.88 billion, 56.6% of total expenditure. 
+The NIC of items prescribed in primary care in England in 2021/22 was £9.49 billion, 51.6% of total expenditure. In 2017/18 the NIC of items prescribed in primary care in England was £8.88 billion, 56.6% of total expenditure. 
 
+The cost of medicines issued in hospitals in England in 2021/22 was £8.77 billion, 47.7% of total expenditure. In 2017/18 the cost of medicines issued in hospitals in England was £6.63 billion, 42.3% of total expenditure. 
 
-#### Figure 3: Percentage change in costs from previous financial year by setting between between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) in primary care
+#### Figure 3: Percentage change in costs from previous financial year by setting between between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r fy_changes, out.width = "100%"}
 
 chart_data <- table_3 |>
@@ -437,7 +438,7 @@ The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billio
 
 In 2021/22 the total costs paid for drugs, dressing, appliances, and medical devices was £18.4 billion. This was an increase of 7.86% from the £17.0 billion paid in 2020/21 and an increase of 17.3% from the £15.7 billion paid in 2017/18.
 
-#### Figure 4: Total costs by setting between April 2017 and March 2022 using Net Ingredient Costs (NIC) in primary care
+#### Figure 4: Total costs by setting between April 2017 and March 2022 using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r monthly_summary, out.width = "100%"}
 
 chart_data <- table_4 |>
@@ -536,11 +537,11 @@ figure_4
 
 Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Table Four](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc-2021-summary-tables-v001.xlsx)
 
-In March 2022, the total actual costs paid for drugs, dressing, appliances, and medical devices which have been issued and used in NHS hospitals in England stood at £814 million. This in an increase of 11.8% on the £728 million paid in March 2021 and an increase of 40.8% on the £578 million paid in March 2018. 
+In March 2022, the total costs paid for medicines, appliances, and medical devices which have been issued in NHS hospitals in England was £814 million. This in an increase of 11.8% on the £728 million paid in March 2021 and an increase of 40.8% on the £578 million paid in March 2018. 
 
 ### 2.2 Costs by BNF Chapter
 
-#### Figure 5: Total costs by BNF Chapter in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+#### Figure 5: Total costs by BNF Chapter in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r bnf_summary, out.width = "100%"}
 
 
@@ -648,7 +649,7 @@ Within primary care in the community in 2021/22 chapter 2 - Cardiovascular Syste
 
 Within hospitals in 2021/22 there was a spend of £382 million which is not accounted for under any of the BNF Chapters. These are drugs manufactured as specials, dressings, appliances, and medical devices which are not authored on the Dictionary of Medicines and Devices (dm+d).
 
-#### Figure 6: Top 10 BNF Sections by spend across all settings in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+#### Figure 6: Top 10 BNF Sections by spend across all settings in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r bnf_section_summary, out.width = "100%"}
 
 chart_data_top_n <- table_6 |>
@@ -788,7 +789,7 @@ Within primary care in the community in 2021/22 section 0601 - Drugs Used in Dia
 
 ### 2.3 Costs by ICB
 
-#### Figure 7: Total costs by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+#### Figure 7: Total costs by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r stp_summary, out.width = "100%"}
 
 chart_data_order <- table_7 |>
@@ -903,7 +904,7 @@ Data around dental in the community has not been included in figure 5 as dental 
 
 ICB costs in secondary care are based on the ICB in which the hospital is located. Not all spend is specifically for that ICB (e.g. patients may be referred to a hospital outside of their usual ICB of residence).
 
-#### Figure 8: Average costs per capita by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) in primary care
+#### Figure 8: Average costs per capita by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r stp_per_capita, out.width = "100%"}
 
 chart_data <- table_7 |>
@@ -1002,11 +1003,11 @@ NHS Birmingham and Solihull was the ICB with the largest average per capita cost
 
 ## 3. Changes to this publication
 
-We have added an additional table and figure which now includes the actual costs in primary care. A definition of actual costs can be found in section 1.2 of this publication.
+We have included the Actual Cost for prescription items dispensed in the community at national level to provide a more accurate measure of the total cost to NHS commissioners for the provision of medicines, appliances, and medical devices in England. Data for Actual Cost can be found in the supporting summary tables for this publication. Please see section 1.3 - Definitions for guidance on the different cost measures presented in these statistics.
 
-In July 2022 Integrated Care Boards (ICBs) replaced Sustainability and Transformation Plans (STPs) as the legal organisations responsible for commissioning pharmaceutical services. In these statistics we have used the latest NHS organisational structure.
+In July 2022 ICBs replaced STPs as legal entities within the NHS. These statistics have been presented with the latest NHS organisational structure, including historical data to allow easier comparisons to be made across the time period. Users should always use the latest statistics available when carrying out any analysis.
 
-For full details of the changes made please refer to the [Background Information and Methodology](https://nhsbsa.nhs.uk/sites/default/files/2021-11/PCHC_2021_background_information_methodology_v001.pdf) note released alongside these statistics.
+For full details of the changes made please refer to the [Background Information and Methodology](https://nhsbsa-opendata.s3.eu-west-2.amazonaws.com/pchc/pchc_2022_background_information_methodology_v001.html) note released alongside these statistics.
 
 ---
 
@@ -1018,7 +1019,7 @@ These statistics have a variety of uses including:
 
 * Obtaining a national view of costs for prescriptions dispensed in hospitals and the community in England across the financial year.
 
-* Analysis of cost trends by BNF Chapter, BNF Section and IBC.
+* Analysis of cost trends by BNF Chapter, BNF Section and ICB.
 
 * Allowing public scrutiny of national prescribing habits.
 
