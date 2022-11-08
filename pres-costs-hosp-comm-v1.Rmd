@@ -61,7 +61,7 @@ Published 10 November 2022
 
 ## Key findings
 
-The total cost to NHS commissioners (known as actual cost in primary care data) in England, including central rebates, for the issue of medicines, appliances, and medical devices in 2021/22 is estimated to be £17.3 billion. The total cost without central rebates was £17.8 billion, an increase of 8.32% from £16.4 billion in 2020/21.
+The total cost to NHS commissioners (known as actual cost in primary care data) in England, including a deduction of £619 million for central rebates, for the issue of medicines, appliances, and medical devices in 2021/22 is estimated to be £17.2 billion. The total cost without central rebates was £17.8 billion, an increase of 8.32% from £16.4 billion in 2020/21.
 
 In 2021/22, the cost to NHS commissioners in England for medicines:
 
@@ -241,8 +241,6 @@ Source: [Summary Tables - Prescribing Costs in Hospitals and the Community - Tab
 The actual cost of items prescribed in primary care in England in 2021/22 was £8.90 billion, 50.0% of total expenditure. In 2017/18 the actual cost of items prescribed in primary care in England was £8.26 billion, 54.9% of total expenditure. 
 
 The cost of medicines issued in hospitals in England in 2021/22 was £8.77 billion, 49.3% of total expenditure. In 2017/18 the cost of medicines issued in hospitals in England was £6.63 billion, 44.1% of total expenditure. 
-
-The central rebate accounted for £495 million in financial year 2021/22. This would reduce the overall expenditure in hospitals for 2021/22 to £8.27 billion. This figure has not been accounted for in the charts and summary tables as it is not available at a more granular level than overall amount.
 
 #### Figure 2: Total costs by setting between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r fy_nic, out.width = "100%"}
