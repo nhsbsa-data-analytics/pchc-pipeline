@@ -87,8 +87,6 @@ Data is limited in this publication to only prescription items that have been di
 
 This data includes all prescriptions issued in England and subsequently dispensed in the community in England, Scotland, Wales, or the Channel Islands. The data excludes any prescriptions issued through Justice and Armed Services health services in England commissioned by NHS England and NHS Improvement (NHSEI) but not dispensed via a community pharmacist.
 
-
-
 ### 1.2. British National Formulary (BNF) hierarchy {.toc-ignore}
 
 These statistics use the therapeutic classifications defined in the BNF to group medicines together based on their primary therapeutic indication. The NHSBSA uses and maintains the classification system of the BNF implemented prior to the release of edition 70, including the six pseudo BNF chapters (18 to 23) created by NHS Prescription Services used to classify products that fall outside of chapters 1 to 15. Most of these presentations held in these pseudo chapters are dressings, appliances, and medical devices. Each January the NHSBSA updates the classification of drugs within the BNF hierarchy which may involve some drugs changing BNF codes and moving within the hierarchy.
@@ -96,7 +94,6 @@ These statistics use the therapeutic classifications defined in the BNF to group
 The BNF has multiple levels, in descending order from the largest grouping to smallest they are chapter, section, paragraph, sub-paragraph, chemical substance, product, and individual presentation. Presentations in chapters 20 to 23 do not have assigned BNF paragraphs, sub-paragraphs, chemical substances, or products.
 
 Within the secondary care data which is provided by Rx-Info the BNF classification is obtained from an extract of the dm+d.
-
 
 ### 1.3. Geographies included in this publication {.toc-ignore}
 
@@ -108,7 +105,6 @@ Within the secondary care data ICB is provided by Rx-Info who use NHS Digital Or
 
 This publication presents the ICB names as described by the [Office of National Statistics (ONS)](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/clinicalcommissioninggroupmidyearpopulationestimates) and not as how they are stored in NHSBSA or Rx-Info data. This is different from other NHSBSA publications.
 
-
 ## 2. Methodology
 
 ### 2.1 Changes to the methodology {.toc-ignore}
@@ -119,7 +115,6 @@ Starting with the 2020/21 release, this publication by the NHSBSA will be produc
 
 In previous releases of PCHC data was presented at a national level only. To allow for further exploration into the data this will now be broken down to both costs by BNF Chapter, Section and ICB.
 
-
 ### 2.2 Limitations {.toc-ignore}
 
 Owing to commercial confidentiality, it is not possible to present the secondary care data any lower then BNF Section. Actual costs include any discounts, these prices are commercially sensitive so are not publicly available, however, they can be significant for specific types of drugs.
@@ -128,20 +123,19 @@ Owing to commercial confidentiality, it is not possible to present the secondary
 
 This is an experimental official statistic release. Experimental statistics are newly developed or innovative statistics. These are published so that users and stakeholders can be involved in the assessment of their suitability and quality at an early stage. We will regularly be reviewing the methodology used within the statistics.
 
-
 ### 3.1. Changes to geographies {.toc-ignore}
-
 
 In previous releases of this publication the geographies used were Region and Sustainability and Transformation Plans (STPs). Changes to the NHS Organisational Structure mean that Integrated Care Boards (ICBs) will replace STPs from July 2022. Further details of the changes can be found at the NHS Digital Organisation Data Service [website](https://digital.nhs.uk/services/organisation-data-service/integrated-care-boards).
 
 ### 3.2. Actual Cost {.toc-ignore}
 
-TBA
+For prescription items dispensed in the community, Actual Cost is the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors. It is calculated as the basic price of a product (Net Ingredient Cost) less the national average discount percentage (NADP) plus payments for consumables, out of pocket expenses (OOPE), and payments for containers:
 
+**Actual Cost = NIC * (1 – NADP) + payments for consumables + OOPE + payment for containers**
 
-<!-- ### 3.3. Planned changes to this publication {.toc-ignore} -->
+The NADP is calculated using the discount rates applied to individual dispensing contractors according to the Drug Tariff for England and Wales for Pharmacy and Appliance contractors and the General Medical Services Statement of Financial Entitlement Annex G Part 1 for Dispensing Doctors and Personal Administration accounts.
 
-
+Actual cost is not reflective of the payment made to a dispensing contractor for the cost of the individual drugs dispensed and excludes other fees paid that a prescription item may attract.
 
 ## 4. Strengths and limitations
 
