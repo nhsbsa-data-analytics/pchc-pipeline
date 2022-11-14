@@ -129,13 +129,9 @@ In previous releases of this publication the geographies used were Region and Su
 
 ### 3.2. Actual Cost {.toc-ignore}
 
-For prescription items dispensed in the community, Actual Cost is the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors. It is calculated as the basic price of a product (Net Ingredient Cost) less the national average discount percentage (NADP) plus payments for consumables, out of pocket expenses (OOPE), and payments for containers:
+An additional table has been included in this publication showing the actual cost  for prescription items dispensed in the community at national level. Previous publications only included the Net Ingredient Cost (NIC) for prescriptions dispensed in the community.
 
-**Actual Cost = NIC * (1 – NADP) + payments for consumables + OOPE + payment for containers**
 
-The NADP is calculated using the discount rates applied to individual dispensing contractors according to the Drug Tariff for England and Wales for Pharmacy and Appliance contractors and the General Medical Services Statement of Financial Entitlement Annex G Part 1 for Dispensing Doctors and Personal Administration accounts.
-
-Actual cost is not reflective of the payment made to a dispensing contractor for the cost of the individual drugs dispensed and excludes other fees paid that a prescription item may attract.
 
 ## 4. Strengths and limitations
 
@@ -304,9 +300,18 @@ Changes to the figures displayed in these statistics over time should be interpr
 
 These statistics use the BNF therapeutic classifications defined in the British National Formulary (BNF) using the classification system prior to BNF edition 70. Each January the NHSBSA updates the classification of drugs within the BNF hierarchy which may involve some drugs changing classification between years of PCA data. This data is therefore correct at the time of publication but may differ in the following year. The NHSBSA publishes the latest BNF information each year via its information systems. 
 
-The data for secondary care is provided by Rx-Info. Rx-Info use an extract from the dm+d to obtain BNF classifications. This data is only available back to April 2016. This differs from other NHSBSA releases, but the time series will be expanded each year until a full rolling 10-year period is achieved.  
+The data for secondary care is provided by Rx-Info. Rx-Info use an extract from the dm+d to obtain BNF classifications. This data is only available back to April 2016. This differs from other NHSBSA releases, but the time series will be expanded each year until a full rolling 10-year period is achieved. 
 
 ## 8. Glossary of terms used in these statistics
+
+#### Actual costs within primary care {.toc-ignore}
+Actual cost is the cost recharged to NHS commissioners for the provision of drugs, appliances, and medical devices by dispensing contractors. It is calculated as the basic price of a product (Net Ingredient Cost) less the national average discount percentage (NADP) plus payments for consumables, out of pocket expenses (OOPE), and payments for containers:
+
+>**Actual cost = net ingredient cost * (1 – NADP) + payments for consumables + OOPE + payment for containers**
+
+The NADP is calculated using the discount rates applied to individual dispensing contractors according to the Drug Tariff for England and Wales for Pharmacy and Appliance contractors and the General Medical Services Statement of Financial Entitlement Annex G Part 1 for Dispensing Doctors and Personal Administration accounts.
+
+Actual cost is not reflective of the payment made to a dispensing contractor for the cost of the individual drugs dispensed and excludes other fees paid that a prescription item may attract.
 
 #### Actual costs within secondary care {.toc-ignore}
 
