@@ -61,7 +61,7 @@ Published 10 November 2022
 
 ## Key findings
 
-The total cost to NHS commissioners (known as actual cost in primary care data) in England, including a deduction of £619 million for central rebates, for the issue of medicines, appliances, and medical devices in 2021/22 is estimated to be £17.2 billion. The total cost without central rebates was £17.8 billion, an increase of 8.32% from £16.4 billion in 2020/21.
+The total cost to NHS commissioners (known as actual cost in primary care data) in England, for the issue of medicines, appliances, and medical devices in 2021/22 is estimated to be £17.2 billion. This includes a deduction of £619 million for central rebates. The total cost without central rebates was £17.8 billion, an increase of 8.32% from £16.4 billion in 2020/21.
 
 In 2021/22, the cost to NHS commissioners in England for medicines:
 
@@ -70,9 +70,9 @@ In 2021/22, the cost to NHS commissioners in England for medicines:
 * prescribed in hospitals and dispensed in the community was £85.1 million
 * prescribed by dentists and dispensed in the community was £29.3 million
 
-In 2021/22, the BNF Chapter 8 – Malignant Disease and Immunosuppression had the highest spend across all settings of £3.11 billion when using Net Ingredient Cost (NIC) in primary care, 16.9% of the total spend. Of this spend, £2.95 billion was for medicines issued and dispensed in hospitals.
+In 2021/22, the BNF Chapter 8 – Malignant Disease and Immunosuppression had the highest spend across all settings of £3.11 billion when using Net Ingredient Cost (NIC) for items dispensed in the community, 16.9% of the total spend. Of this spend, £2.95 billion was for medicines issued and dispensed in hospitals.
 
-The average costs per capita when using NIC in primary care for medicines, appliances, and medical devices prescribed in England in 2021/22 across all settings was £324. This is an increase from £301 in 2020/21.
+The average costs per capita when using NIC for items dispensed in the community for medicines, appliances, and medical devices prescribed in England in 2021/22 across all settings was £324. This is an increase from £301 in 2020/21.
 
 ---
 
@@ -88,7 +88,7 @@ These statistics cover NHS prescriptions and medicines issued in England. This i
 
 *	prescriptions issued by dental practitioners that have been dispensed in the community in the UK (excluding Northern Ireland)
 
-*	medicines issued in hospitals in England that have been dispensed via the hospital pharmacy, homecare companies and outsourced out-patient pharmacy partnerships
+*	medicines issued in hospitals in England that have been dispensed via the hospital pharmacy, homecare companies and outsourced outpatient pharmacy partnerships
 
 But excludes:
 
@@ -134,7 +134,7 @@ Net Ingredient Cost (NIC) for prescription items dispensed in the community is t
 
 These statistics use the therapeutic classifications defined in the BNF to group medicines together based on their primary therapeutic indication. The NHSBSA uses and maintains the classification system of the BNF implemented prior to the release of edition 70, including the six pseudo BNF chapters (18 to 23) created by NHS Prescription Services used to classify products that fall outside of chapters 1 to 15.
 
-ICBs are a statutory organisation responsible bringing the NHS together locally to improve population health and establish shared strategic priorities within the NHS. They took over the functions of Sustainability and Transformation Partnerships (STPs) in July 2022.
+ICBs are statutory organisations responsible for bringing the NHS together locally to improve population health and establish shared strategic priorities within the NHS. They took over the functions of Sustainability and Transformation Partnerships (STPs) in July 2022.
 
 Prescribing volumes are not included in this publication. Unlike in the primary care dataset, where item level data is available, in secondary care, data is collated as quantities issued. The concept of a prescription item does not exist for secondary care medicines data.
 
@@ -900,7 +900,7 @@ Data under the 'Undefined' ICB relate to costs in both the primary and secondary
 
 Data around dental in the community has not been included in figure 5 as dental data is captured under a national code and not available at ICB level.
 
-ICB costs in secondary care are based on the ICB in which the hospital is located. Not all spend is specifically for that ICB (e.g. patients may be referred to a hospital outside of their usual ICB of residence).
+ICB costs in secondary care are based on the ICB in which the hospital is located. Not all spend is specifically for that ICB (for example, patients may be referred to a hospital outside of their usual ICB of residence).
 
 #### Figure 8: Average costs per capita by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
 ```{r stp_per_capita, out.width = "100%"}
@@ -1015,11 +1015,11 @@ For full details of the changes made please refer to the [Background Information
 
 These statistics have a variety of uses including:
 
-* Obtaining a national view of costs for prescriptions dispensed in hospitals and the community in England across the financial year.
+* obtaining a national view of costs for prescriptions dispensed in hospitals and the community in England across the financial year
 
-* Analysis of cost trends by BNF Chapter, BNF Section and ICB.
+* analysis of cost trends by BNF Chapter, BNF Section and ICB
 
-* Allowing public scrutiny of national prescribing habits.
+* allowing public scrutiny of national prescribing habits
 
 ### 4.2 British National Formulary (BNF) 
 
