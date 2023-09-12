@@ -146,7 +146,8 @@ The charts in this report are interactive and allow you to isolate the topics th
 
 ### 2.1 Costs by setting
 
-#### Figure 1: Total costs to NHS commissioners by setting between 2017/2018 and 2021/2022 using actual costs for items dispensed in the community
+#### Figure 1: Total costs to NHS commissioners by setting between 2017/2018 and 2021/2022
+##### These figures use actual costs for both items dispensed in the community and those issued in hospitals.
 ```{r fy_actual_costs, out.width = "100%"}
 
 chart_data <- table_1 |>
@@ -242,7 +243,8 @@ The actual cost of items prescribed in primary care in England in 2021/22 was £
 
 The cost of medicines issued in hospitals in England in 2021/22 was £8.77 billion, 49.3% of total expenditure. In 2017/18 the cost of medicines issued in hospitals in England was £6.63 billion, 44.1% of total expenditure. 
 
-#### Figure 2: Total costs by setting between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) for items dispensed in the community
+#### Figure 2: Total costs by setting between 2017/2018 and 2021/2022
+##### These figures use Net Ingredient Costs (NIC) for items dispensed in the community and actual costs for those issued in hospitals.
 ```{r fy_nic, out.width = "100%"}
 chart_data <- table_2 |>
   pivot_longer(
@@ -337,7 +339,8 @@ The NIC of items prescribed in primary care in England in 2021/22 was £9.49 bil
 
 The cost of medicines issued in hospitals in England in 2021/22 was £8.77 billion, 47.7% of total expenditure. In 2017/18 the cost of medicines issued in hospitals in England was £6.63 billion, 42.3% of total expenditure. 
 
-#### Figure 3: Percentage change in costs from previous financial year by setting between between 2017/2018 and 2021/2022 using Net Ingredient Costs (NIC) for items dispensed in the community
+#### Figure 3: Percentage change in costs from previous financial year by setting between between 2017/2018 and 2021/2022
+##### These figures use Net Ingredient Costs (NIC) for items dispensed in the community and actual costs for those issued in hospitals.
 ```{r fy_changes, out.width = "100%"}
 
 chart_data <- table_3 |>
@@ -436,7 +439,8 @@ The cost of items dispensed in hospitals in England in 2021/22 was £8.77 billio
 
 In 2021/22 the total costs paid for drugs, dressing, appliances, and medical devices was £18.4 billion. This was an increase of 7.86% from the £17.0 billion paid in 2020/21 and an increase of 17.3% from the £15.7 billion paid in 2017/18.
 
-#### Figure 4: Total costs by setting between April 2017 and March 2022 using Net Ingredient Costs (NIC) for items dispensed in the community
+#### Figure 4: Total costs by setting between April 2017 and March 2022
+##### These figures use Net Ingredient Costs (NIC) for items dispensed in the community and actual costs for those issued in hospitals.
 ```{r monthly_summary, out.width = "100%"}
 
 chart_data <- table_4 |>
@@ -539,7 +543,8 @@ In March 2022, the total costs paid for medicines, appliances, and medical devic
 
 ### 2.2 Costs by BNF Chapter
 
-#### Figure 5: Total costs by BNF Chapter in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
+#### Figure 5: Total costs by BNF Chapter in the 2021/2022 financial year
+##### These figures use Net Ingredient Costs (NIC) for items dispensed in the community and actual costs for those issued in hospitals.
 ```{r bnf_summary, out.width = "100%"}
 
 
@@ -647,7 +652,8 @@ Within primary care in the community in 2021/22 chapter 2 - Cardiovascular Syste
 
 Within hospitals in 2021/22 there was a spend of £382 million which is not accounted for under any of the BNF Chapters. These are drugs manufactured as specials, dressings, appliances, and medical devices which are not authored on the Dictionary of Medicines and Devices (dm+d).
 
-#### Figure 6: Top 10 BNF Sections by spend across all settings in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
+#### Figure 6: Top 10 BNF Sections by spend across all settings in the 2021/2022 financial year
+##### These figures use Net Ingredient Costs (NIC) for items dispensed in the community and actual costs for those issued in hospitals.
 ```{r bnf_section_summary, out.width = "100%"}
 
 chart_data_top_n <- table_6 |>
@@ -787,7 +793,8 @@ Within primary care in the community in 2021/22 section 0601 - Drugs Used in Dia
 
 ### 2.3 Costs by ICB
 
-#### Figure 7: Total costs by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
+#### Figure 7: Total costs by ICB in the 2021/2022 financial year
+##### These figures use Net Ingredient Costs (NIC) for items dispensed in the community and actual costs for those issued in hospitals.
 ```{r stp_summary, out.width = "100%"}
 
 chart_data_order <- table_7 |>
@@ -902,7 +909,8 @@ Data around dental in the community has not been included in figure 5 as dental 
 
 ICB costs in secondary care are based on the ICB in which the hospital is located. Not all spend is specifically for that ICB (for example, patients may be referred to a hospital outside of their usual ICB of residence).
 
-#### Figure 8: Average costs per capita by ICB in the 2021/2022 financial year using Net Ingredient Costs (NIC) for items dispensed in the community
+#### Figure 8: Average costs per capita by ICB in the 2021/2022 financial year
+##### These figures use Net Ingredient Costs (NIC) for items dispensed in the community and actual costs for those issued in hospitals.
 ```{r stp_per_capita, out.width = "100%"}
 
 chart_data <- table_7 |>
