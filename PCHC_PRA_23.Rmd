@@ -1,0 +1,156 @@
+---
+title: "NHS Business Services Authority" 
+always_allow_html: yes
+output:
+  html_document:
+    anchor_sections: no
+    css: www/style.css
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+  <script>
+    $(document).ready(function() {
+      $('#header').prepend('<img src=`r knitr::image_uri("www/bsa_logo.svg")` alt=\"NHSBSA logo\" style=\"position:relative; float: right; top: 0; right: 0; padding: 10px; width: 25%;\">');
+  });
+</script>
+  
+  <style type="text/css">
+  
+  body, td {
+    font-size: 16px;
+    font-family: sans-serif;
+  }
+</style>
+  <html lang="en">
+  
+
+```{r setup, include=FALSE}
+# set code chunk options to disable echo by default
+
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library("tidyverse")
+library("usethis")
+library("rmarkdown")
+library("tibble")
+library("readxl")
+library("dplyr")
+library("xtable")
+install.packages("tidyverse")
+install.packages("usethis")
+install.packages("rmarkdown")
+install.packages("tibble")
+install.packages("readxl")
+install.packages("dplyr")
+
+
+get_pra_file <- function(path = NULL, interactive = TRUE) {
+  
+  if(interactive == FALSE || !is.null(path)) {
+    path <- path
+  } else {
+    path <- file.choose()
+  }
+  
+  readxl::read_excel(path)
+  
+}
+
+
+filter_pra_list_and_kabel <- function(data, org) {
+  pra <- data |>
+    dplyr::filter(Organisation == org) |>
+    dplyr::group_by(Title) |>
+    dplyr::summarise(`Number of roles` = dplyr::n())
+  
+  if(nrow(pra) == 0) {
+    stop("No PRA recipients found for ", org)
+  }
+  
+ knitr::kable(pra)
+}
+
+
+unfiltered_pra_data <-get_pra_file()
+```
+
+# Prescribing Costs in Hospitals and the Community {.toc-ignore}
+# England 2015/16 to 2022/23 {.toc-ignore}
+## Pre-release access list {.toc-ignore}
+
+As per the ‘Statement of Compliance with Pre-release Access to Statistics Order 2008’, in addition to staff in the NHS Business Services Authority (NHSBSA) who are responsible for the production and quality assurance of the statistics, below is a list of job titles and organisations of people who have been granted 24 hours pre-release access:
+
+
+
+### NHS Business Services Authority
+
+
+
+
+```{r}
+
+
+## extracted data from tibble being filtered "unfiltered_pra_data" for NHSBSA members, summed into number of individuals per job title, arranged alphabetically and returned as a knitr_kable table
+
+
+filter_pra_list_and_kabel(unfiltered_pra_data, "NHSBSA")
+
+```
+
+
+### Department of Health and Social Care
+
+
+
+```{r}
+
+## extracted data from tibble being filtered "unfiltered_pra_data" for DHSC members, summed into number of individuals per job title, arranged alphabetically and returned as a knitr_kable table
+
+
+
+filter_pra_list_and_kabel(unfiltered_pra_data, "DHSC")
+
+```
+
+The staff roles listed below are directly involved in the production and distribution of the statistics in this publication:
+
+### NHS Business Services Authority
+
+```{r}
+
+##
+
+Stats_team_role_call <- data.frame(title = c( "Data Scientist" ,"Senior Statistical Officer", "Statistical Publication Lead", "Statistical Officer"), c(1,2,1, 2))
+
+names(Stats_team_role_call) <- c("Title", "Number of roles")
+
+knitr::kable(Stats_team_role_call)
+```
+
+
+
+### NHS England
+
+
+```{r}
+
+## extracted data from tibble being filtered "unfiltered_pra_data" for NHSE members, summed into number of individuals per job title, arranged alphabetically and returned as a knitr_kable table
+
+
+
+filter_pra_list_and_kabel(unfiltered_pra_data, "NHSE")
+
+```
